@@ -32,7 +32,7 @@ public class SelectionManager : MonoBehaviour {
 	}
 
 
-	public Map map;
+	public GameObject map;
 
 	void Update () {
 
@@ -64,9 +64,17 @@ public class SelectionManager : MonoBehaviour {
     public void setCurrentUnit(GameObject unit)
     {
         this.currentUnit = unit;
+        
+        Instantiate(currentUnit);
+        this.currentUnit.GetComponent<Pathfinding>().tileX = map.GetComponent<AdaptedMap>().map[currentSelected.GetComponent<Pathfinding>().tileX, currentSelected.GetComponent<Pathfinding>().tileY].tileX + 2;
+        this.currentUnit.GetComponent<Pathfinding>().tileY = map.GetComponent<AdaptedMap>().map[currentSelected.GetComponent<Pathfinding>().tileX, currentSelected.GetComponent<Pathfinding>().tileY].tileY;
+        currentSelected.GetComponent<Unidad>().Finished = true;
+        UnitCanvas.SetActive(false);
+        currentSelected = null;
+        
     }
 
-	private void SwitchPanel(Unidad unit){
+    private void SwitchPanel(Unidad unit){
 
 		unit.Panel.gameObject.SetActive (true);
 
@@ -76,6 +84,7 @@ public class SelectionManager : MonoBehaviour {
             UnitCanvas.transform.GetChild(2).gameObject.SetActive(false);
             UnitCanvas.transform.GetChild(3).gameObject.SetActive(false);
             UnitCanvas.transform.GetChild(4).gameObject.SetActive(false);
+            UnitCanvas.transform.GetChild(5).gameObject.SetActive(false);
 
         }
         else if (unit.Panel.name.Equals("Soldier Panel"))
@@ -84,6 +93,7 @@ public class SelectionManager : MonoBehaviour {
             UnitCanvas.transform.GetChild(2).gameObject.SetActive(false);
             UnitCanvas.transform.GetChild(3).gameObject.SetActive(false);
             UnitCanvas.transform.GetChild(4).gameObject.SetActive(false);
+            UnitCanvas.transform.GetChild(5).gameObject.SetActive(false);
 
         }
         else if (unit.Panel.name.Equals("Building Panel"))
@@ -92,6 +102,7 @@ public class SelectionManager : MonoBehaviour {
             UnitCanvas.transform.GetChild(1).gameObject.SetActive(false);
             UnitCanvas.transform.GetChild(3).gameObject.SetActive(false);
             UnitCanvas.transform.GetChild(4).gameObject.SetActive(false);
+            UnitCanvas.transform.GetChild(5).gameObject.SetActive(false);
         }
         else if (unit.Panel.name.Equals("Barracks Panel"))
         {
@@ -99,6 +110,16 @@ public class SelectionManager : MonoBehaviour {
             UnitCanvas.transform.GetChild(1).gameObject.SetActive(false);
             UnitCanvas.transform.GetChild(2).gameObject.SetActive(false);
             UnitCanvas.transform.GetChild(3).gameObject.SetActive(false);
+            UnitCanvas.transform.GetChild(5).gameObject.SetActive(false);
+
+        }
+        else if (unit.Panel.name.Equals("nexus Panel"))
+        {
+            UnitCanvas.transform.GetChild(0).gameObject.SetActive(false);
+            UnitCanvas.transform.GetChild(1).gameObject.SetActive(false);
+            UnitCanvas.transform.GetChild(2).gameObject.SetActive(false);
+            UnitCanvas.transform.GetChild(3).gameObject.SetActive(false);
+            UnitCanvas.transform.GetChild(4).gameObject.SetActive(false);
 
         }
         else { 
@@ -138,7 +159,9 @@ public class SelectionManager : MonoBehaviour {
 				//por lo que se activa y se actualiza el panel para la unidad actual
 				UnitCanvas.SetActive (true);
 				ActualizePanel (objective.GetComponent<Unidad> ());
-			}	
+			}
+          	
+
 		} 
 
 		//Si ya tenemos una unidad seleccionada 
