@@ -25,11 +25,11 @@ public class AdaptedMap : MonoBehaviour
 
 	void Start () {
         map = new Hex[width, height];
-        //GenerateDataInfo(gameObject);
+        GenerateDataInfo(gameObject);
         selectedUnit = null;
         GenerateMapData();
 		GeneratePathFindgGraph();
-		GenerateMapVisual();
+		//GenerateMapVisual();
 	}
 
     private void GenerateDataInfo(GameObject mapa)
@@ -62,7 +62,7 @@ public class AdaptedMap : MonoBehaviour
 	void GenerateMapData()
 	{
 		tiles = new int[width, height];
-		map = new Hex[width, height];
+		//map = new Hex[width, height];
 
 		for (int x = 0; x < width; x++)
 		{
