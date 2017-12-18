@@ -65,9 +65,10 @@ public class SelectionManager : MonoBehaviour {
     {
         this.currentUnit = unit;
         
-        Instantiate(currentUnit);
+        
         this.currentUnit.GetComponent<Pathfinding>().tileX = map.GetComponent<AdaptedMap>().map[currentSelected.GetComponent<Pathfinding>().tileX, currentSelected.GetComponent<Pathfinding>().tileY].tileX + 2;
         this.currentUnit.GetComponent<Pathfinding>().tileY = map.GetComponent<AdaptedMap>().map[currentSelected.GetComponent<Pathfinding>().tileX, currentSelected.GetComponent<Pathfinding>().tileY].tileY;
+        Instantiate(currentUnit);
         currentSelected.GetComponent<Unidad>().Finished = true;
         UnitCanvas.SetActive(false);
         currentSelected = null;
