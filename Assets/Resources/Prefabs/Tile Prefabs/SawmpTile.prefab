@@ -40,7 +40,7 @@ GameObject:
   - component: {fileID: 64448406075867208}
   m_Layer: 0
   m_Name: Hexa
-  m_TagString: Untagged
+  m_TagString: Suelo
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -142,3 +142,4 @@ MonoBehaviour:
   y: 0
   tileX: 0
   tileY: 0
+  tileType: 0

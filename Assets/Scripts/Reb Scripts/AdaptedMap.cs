@@ -25,11 +25,11 @@ public class AdaptedMap : MonoBehaviour
 
 	void Start () {
         map = new Hex[width, height];
-        GenerateDataInfo(gameObject);
+        //GenerateDataInfo(gameObject);
         selectedUnit = null;
         GenerateMapData();
 		GeneratePathFindgGraph();
-		//GenerateMapVisual();
+		GenerateMapVisual();
 	}
 
     private void GenerateDataInfo(GameObject mapa)
@@ -62,7 +62,7 @@ public class AdaptedMap : MonoBehaviour
 	void GenerateMapData()
 	{
 		tiles = new int[width, height];
-		//map = new Hex[width, height];
+		map = new Hex[width, height];
 
 		for (int x = 0; x < width; x++)
 		{
@@ -71,16 +71,148 @@ public class AdaptedMap : MonoBehaviour
 				tiles[x, y] = 0;
 			}
 		}
-
-		for (int x = 3; x <= 5; x++)
+        // montar mapa a partir de aquí
+		for (int x = 0; x <= 19; x++)
 		{
-			for (int y = 0; y < 4; y++)
+			for (int y = 0; y < 1; y++)
 			{
-				tiles[x, y] = 1;
+				tiles[x, y] = 2;
 			}
 		}
-
-		tiles[4, 4] = 2;
+        for (int x = 20; x <= 23; x++)
+        {
+            for (int y = 0; y < 1; y++)
+            {
+                tiles[x, y] = 1;
+            }
+        }
+        for (int x = 19; x <= 22; x++)
+        {
+            for (int y = 1; y < 2; y++)
+            {
+                tiles[x, y] = 1;
+            }
+        }
+        for (int x = 20; x <= 23; x++)
+        {
+            for (int y = 2; y < 3; y++)
+            {
+                tiles[x, y] = 1;
+            }
+        }
+        for (int x = 19; x <= 23; x++)
+        {
+            for (int y = 3; y < 4; y++)
+            {
+                tiles[x, y] = 1;
+            }
+        }
+        for (int x = 20; x <= 23; x++)
+        {
+            for (int y = 4; y < 5; y++)
+            {
+                tiles[x, y] = 1;
+            }
+        }
+        for (int x = 19; x <= 22; x++)
+        {
+            for (int y = 5; y < 6; y++)
+            {
+                tiles[x, y] = 1;
+            }
+        }
+        for (int x = 19; x <= 22; x++)
+        {
+            for (int y = 6; y <7; y++)
+            {
+                tiles[x, y] = 1;
+            }
+        }
+        for (int x = 18; x <= 21; x++)
+        {
+            for (int y = 7; y < 8; y++)
+            {
+                tiles[x, y] = 1;
+            }
+        }
+        for (int x = 18; x <= 21; x++)
+        {
+            for (int y = 8; y < 9; y++)
+            {
+                tiles[x, y] = 1;
+            }
+        }
+        //-------------
+        for (int x = 17; x <= 20; x++)
+        {
+            for (int y = 9; y < 10; y++)
+            {
+                tiles[x, y] = 1;
+            }
+        }
+        //-------------
+        for (int x = 17; x <= 20; x++)
+        {   
+            for (int y = 10; y < 11; y++)
+            {
+                tiles[x, y] = 1;
+            }
+        }
+        //-------------
+        for (int x = 16; x <= 19; x++)
+        {
+            for (int y = 11; y <= 11; y++)
+            {
+                tiles[x, y] = 1;
+            }
+        }
+        //-------------
+        for (int x = 16; x <= 19; x++)
+        {
+            for (int y = 12; y <=12; y++)
+            {
+                tiles[x, y] = 1;
+            }
+        }//--
+         //-------------
+        for (int x = 31; x <= 38; x++)
+        {
+            for (int y = 0; y <= 0; y++)
+            {
+                tiles[x, y] = 1;
+            }
+        }//--
+         //-------------
+        for (int x = 30; x <= 35; x++)
+        {
+            for (int y = 1; y <= 1; y++)
+            {
+                tiles[x, y] = 1;
+            }
+        }//--
+         //-------------
+        for (int x = 31; x <= 34; x++)
+        {
+            for (int y = 2; y <= 2; y++)
+            {
+                tiles[x, y] = 1;
+            }
+        }//--
+        for (int x = 10; x <= 17; x++)
+        {
+            for (int y = 1; y < 2; y++)
+            {
+                tiles[x, y] = 2;
+            }
+        }
+        for (int x = 12; x <= 16; x++)
+        {
+            for (int y = 2; y < 3; y++)
+            {
+                tiles[x, y] = 2;
+            }
+        }
+        /*tiles[4, 4] = 2;
 		tiles[5, 4] = 2;
 		tiles[6, 4] = 2;
 		tiles[7, 4] = 2;
@@ -89,8 +221,8 @@ public class AdaptedMap : MonoBehaviour
 		tiles[4, 5] = 2;
 		tiles[4, 6] = 2;
 		tiles[8, 5] = 2;
-		tiles[8, 6] = 2;
-	}
+		tiles[8, 6] = 2;*/
+    }
 
 	public float CostToEnterTile (int sourceX, int sourceY, int targetX, int targetY)
 	{
