@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{ED34368F-ADB2-368F-9570-DBE9B8D16EB3}</ProjectGuid>
+    <ProjectGuid>{52D2995B-F7B9-EF64-A198-30FDE3C68321}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -51,18 +51,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Cuartel.cs" />
      <Compile Include="Assets\Scripts\Álvaro Scripts\Hex.cs" />
      <Compile Include="Assets\Scripts\Álvaro Scripts\Map.cs" />
      <Compile Include="Assets\Scripts\Álvaro Scripts\mouseManager.cs" />
      <Compile Include="Assets\Scripts\Álvaro Scripts\Node.cs" />
      <Compile Include="Assets\Scripts\Álvaro Scripts\TileType.cs" />
      <Compile Include="Assets\Scripts\Álvaro Scripts\Unit.cs" />
-     <Compile Include="Assets\Scripts\Game\GameController.cs" />
-     <Compile Include="Assets\Scripts\Game\LevelManager.cs" />
-     <Compile Include="Assets\Scripts\Game\PauseGame.cs" />
      <Compile Include="Assets\Scripts\Manu Scripts\GameManager.cs" />
-     <Compile Include="Assets\Scripts\Manu Scripts\hexType.cs" />
      <Compile Include="Assets\Scripts\Manu Scripts\Player.cs" />
      <Compile Include="Assets\Scripts\Manu Scripts\Resource.cs" />
      <Compile Include="Assets\Scripts\Reb Scripts\AdaptedMap.cs" />
