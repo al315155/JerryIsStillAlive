@@ -8,6 +8,9 @@ TagManager:
   - unit
   - Unit
   - Suelo
+  - sangre
+  - nexo
+  - enemie
   layers:
   - Default
   - TransparentFX

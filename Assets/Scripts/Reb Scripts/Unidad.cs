@@ -9,6 +9,7 @@ public class Unidad : MonoBehaviour
 
 	public TypeOfUnit unitType;
 	public GameObject panel;
+    public GameObject mySelf;
     public Player Owner;
 
 	public bool finished;
@@ -47,7 +48,10 @@ public class Unidad : MonoBehaviour
 	}
 
 	void Update(){
-		
+		if (this.life == 0)
+        {
+            Destroy(mySelf);
+        }
 
 	}
 
@@ -88,8 +92,25 @@ public class Unidad : MonoBehaviour
 
 	//Walkable Functions!
 	public void DoAttack(Unidad unit){
-		//quitar daño de unit con damage
-	}
+        if (this.pathfinding.tileY % 2 == 0)
+        {
+            if ((unit.pathfinding.tileX == this.pathfinding.tileX - 1 && unit.pathfinding.tileY == this.pathfinding.tileY)||(unit.pathfinding.tileX == this.pathfinding.tileX-1 && unit.pathfinding.tileY == this.pathfinding.tileY+1)||(unit.pathfinding.tileX == this.pathfinding.tileX  && unit.pathfinding.tileY == this.pathfinding.tileY + 1)||(unit.pathfinding.tileX == this.pathfinding.tileX - 1 && unit.pathfinding.tileY == this.pathfinding.tileY - 1)||(unit.pathfinding.tileX == this.pathfinding.tileX  && unit.pathfinding.tileY == this.pathfinding.tileY - 1)||(unit.pathfinding.tileX == this.pathfinding.tileX +1 && unit.pathfinding.tileY == this.pathfinding.tileY ))
+            {
+                Debug.Log("vida antes: " + unit.life);
+                unit.life -= this.damage;
+                Debug.Log("vida después: " + unit.life);
+            }
+        }
+        else
+        {
+            if((unit.pathfinding.tileX == this.pathfinding.tileX - 1 && unit.pathfinding.tileY == this.pathfinding.tileY)||(unit.pathfinding.tileX == this.pathfinding.tileX  && unit.pathfinding.tileY == this.pathfinding.tileY+1)||(unit.pathfinding.tileX == this.pathfinding.tileX  && unit.pathfinding.tileY == this.pathfinding.tileY-1)||(unit.pathfinding.tileX == this.pathfinding.tileX + 1 && unit.pathfinding.tileY == this.pathfinding.tileY+1)||(unit.pathfinding.tileX == this.pathfinding.tileX +1 && unit.pathfinding.tileY == this.pathfinding.tileY-1)||(unit.pathfinding.tileX == this.pathfinding.tileX + 1 && unit.pathfinding.tileY == this.pathfinding.tileY))
+            {
+                Debug.Log("vida antes: " + unit.life);
+                unit.life -= this.damage;
+                Debug.Log("vida después: " + unit.life);
+            }
+        }
+     }
 
 	public void DoMove(GameObject hitObject){
 		pathfinding.SetSelected (gameObject);

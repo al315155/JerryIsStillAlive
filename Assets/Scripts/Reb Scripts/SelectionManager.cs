@@ -148,7 +148,7 @@ public class SelectionManager : MonoBehaviour {
 
 			//Si lo que se ha seleccionado ahora es una unidad
 			if (objective.tag.Equals ("Unit")) {
-
+                Debug.Log("hola");
 				Unidad unitReceptor = objective.GetComponent<Unidad> ();
 
 				// ¿es una unidad aliada o una unidad enemiga?
