@@ -198,6 +198,86 @@ public class AdaptedMap : MonoBehaviour
                 tiles[x, y] = 1;
             }
         }//--
+         //-------------
+        for (int x = 31; x <= 34; x++)
+        {
+            for (int y = 3; y <= 3; y++)
+            {
+                tiles[x, y] = 1;
+            }
+        }//--
+         //-------------
+        for (int x = 32; x <= 35; x++)
+        {
+            for (int y = 4; y <= 4; y++)
+            {
+                tiles[x, y] = 1;
+            }
+        }//--
+         //-------------
+        for (int x = 32; x <= 35; x++)
+        {
+            for (int y = 5; y <= 5; y++)
+            {
+                tiles[x, y] = 1;
+            }
+        }//--
+         //-------------
+        for (int x = 33; x <= 36; x++)
+        {
+            for (int y = 6; y <= 6; y++)
+            {
+                tiles[x, y] = 1;
+            }
+        }//--
+         //-------------
+        for (int x = 33; x <= 36; x++)
+        {
+            for (int y = 7; y <= 7; y++)
+            {
+                tiles[x, y] = 1;
+            }
+        }//--
+         //-------------
+        for (int x = 34; x <= 36; x++)
+        {
+            for (int y = 8; y <= 8; y++)
+            {
+                tiles[x, y] = 1;
+            }
+        }//--
+         //-------------
+        for (int x = 34; x <= 35; x++)
+        {
+            for (int y = 9; y <= 9; y++)
+            {
+                tiles[x, y] = 1;
+            }
+        }//--
+         //-------------
+        for (int x = 0; x <= 0; x++)
+        {
+            for (int y = 2; y <= 19; y++)
+            {
+                tiles[x, y] = 1;
+            }
+        }//--
+         //-------------
+      
+            for (int y = 4; y <= 18; y++)
+            {
+                tiles[1, y] = 1;
+            }
+        //--
+        //-------------
+
+        for (int y = 10; y <= 16; y++)
+        {
+            tiles[2, y] = 1;
+        }
+        //--
+        tiles[35, 10] = 1;
+
         for (int x = 10; x <= 17; x++)
         {
             for (int y = 1; y < 2; y++)
