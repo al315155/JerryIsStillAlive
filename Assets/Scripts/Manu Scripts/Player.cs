@@ -2,13 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour {
 
     public int oxygen;
     public int enzymes;
     public bool isMyTurn;
+
+	public Text unitLabel;
+	public Text resourcesLabel;
 
     public List<Unidad> Squad = new List<Unidad>();
 
@@ -17,6 +20,8 @@ public class Player : MonoBehaviour {
         //Inicializamos los recursos a 0
         oxygen = 500;
         enzymes = 500;
+
+		ActualizeLabels ();
     }
 
     public void EnlistUnit(Unidad u)
@@ -56,5 +61,10 @@ public class Player : MonoBehaviour {
 		}
 
 		return true;
+	}
+
+	public void ActualizeLabels(){
+		unitLabel.text = "Units " + Squad.Count;
+		resourcesLabel.text = "Oxygen " + oxygen + "\t\t Enzymes " + enzymes;
 	}
 }
