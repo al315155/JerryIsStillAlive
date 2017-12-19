@@ -7,7 +7,7 @@ public class AdaptedMap : MonoBehaviour
 {
 	public GameObject selectedUnit;
 	public TileType[] tileTypes;
-	Node[,] graph;
+	public Node[,] graph;
 
     public Hex[,] map;
 
@@ -38,9 +38,18 @@ public class AdaptedMap : MonoBehaviour
         {
             Hex h = gameObject.transform.GetChild(i).GetComponent<Hex>();
             map[h.tileX, h.tileY] = h;
+
+			//-----//-----//------//------//------//
+			// INFLUENCE MAP //
+			h.GetComponent<Hex> ().worldObject = h.transform.GetChild(0).gameObject;
+			h.GetComponent<Hex> ().worldPosition = h.transform.position;
+			//-----//-----//------//------//------//
+
             //tiles[h.tileX, h.tileY] = h.gameObject.transform.GetChild(0).GetComponent<hexType>().type;
         }
     }
+
+
 
     void Update () {
 
@@ -58,6 +67,7 @@ public class AdaptedMap : MonoBehaviour
 			}
 		}
 	}
+
 
 	void GenerateMapData()
 	{
@@ -410,6 +420,12 @@ public class AdaptedMap : MonoBehaviour
 				map[x, y] = hex_go.GetComponent<Hex>();
 
 				hex_go.transform.SetParent(this.transform);
+
+				//-----//-----//------//------//------//
+				// INFLUENCE MAP //
+				hex_go.GetComponent<Hex> ().worldObject = hex_go.transform.GetChild(0).gameObject;
+				hex_go.GetComponent<Hex> ().worldPosition = hex_go.transform.position;
+				//-----//-----//------//------//------//
 
 			}
 		}

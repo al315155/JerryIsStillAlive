@@ -4,12 +4,6 @@ using UnityEngine;
 
 public class Hex : MonoBehaviour {
 
-	//------//------//------//------//------//
-	// FOG OF WAR //
-//	int visibility;
-	//------//------//------//------//------//
-
-
     public float x ;
     public float y;
 
@@ -27,31 +21,37 @@ public class Hex : MonoBehaviour {
     }
 
 
+	//-----//-----//------//------//------//
+	// INFLUENCE MAP //
+	public Vector3 worldPosition;
+	public List<KeyValuePair<int, float>> influences;
+	public List<Hex> neighbors;
+	public Color32 myColor;
+	public GameObject worldObject;
 
-    //Look for neightboors
+	public bool HasInfluenceOfType(int type){
+		for (int i = 0; i < influences.Count; i++) {
+
+			if (influences [i].Key == type) {
+
+				return true;
+			}
+		}
+		return false;
+	}
 
 
-	//------//------//------//------//------//
-	// FOG OF WAR //
-//	public HexCellShaderData ShaderData{get;set;}
-//	public int Index{get; set;}
-//
-//	public bool IsVisible{
-//		get{return visibility > 0; }
-//	}
-//
-//	public void IncreaseVisibility(){
-//		visibility += 1;
-//		if (visibility == 1) {
-//			ShaderData.RefreshVisibility (this);
-//		}
-//	}
-//
-//	public void DecreaseVisibility(){
-//		visibility -= 1;
-//		if (visibility == 0) {
-//			ShaderData.RefreshVisibility (this);
-//		}
-//	}
-	//------//------//------//------//------//
+	public KeyValuePair<int, float> GetInfluenceOfType(int type){
+
+		for (int i = 0; i < influences.Count; i++) {
+
+			if (influences [i].Key == type) {
+				return new KeyValuePair<int, float> (i, influences [i].Value);
+			}
+
+		}
+		return new KeyValuePair<int, float> (0, -1);
+	}
+	//-----//-----//------//------//------//
+
 }
