@@ -55,7 +55,6 @@ namespace AssemblyCSharp
 
 		public void UpdateMap(){
 
-			Debug.Log ("llego");
 
 			InfluenceMapTexture = new Texture2D (map.width, map.height);
 
@@ -80,6 +79,10 @@ namespace AssemblyCSharp
 			}
 
 			for (int i = 0; i < m_OriginatorList.Count; i++) {
+
+
+				Debug.Log (m_OriginatorList [i].worldPosition);
+
 				Collider[] influencePositions = Physics.OverlapSphere (m_OriginatorList [i].worldPosition, m_OriginatorList [i].influenceRange, InfluenceMask);
 
 				// para que coga solo suelo (sus colliders)
@@ -102,8 +105,6 @@ namespace AssemblyCSharp
 
 
 				for (int j = 0; j < influencePositions.Length; j++) {
-
-					Debug.Log (influencePositions [j]);
 
 					// LA POSICION X y Z de WORLDPOSITION DEBE SER MAYOR O IGUAL QUE INFLUENCE RANGE. NECESITAMOS CONTROLARLO AL COGER LA LISTA DE INFLUENCE POINTS SI AÑADIMOS UN NUEVO WAYPOINT
 					Hex currentHex = map.map [influencePositions [j].GetComponentInParent<InfluencePosition> ().Hexes [0], influencePositions [j].GetComponentInParent<InfluencePosition> ().Hexes [1]];
@@ -155,9 +156,9 @@ namespace AssemblyCSharp
 //					currentHex.myColor += ((Color)m_OriginatorList [i].color) * (currentHex.influences [k].Value) * (m_OriginatorList [i].influence);
 //					
 					}
-//					newColor.r = (byte) (Mathf.Abs ((float)newColor.r - 255));
-//
-//					newColor.b = (byte) (Mathf.Abs ((float)newColor.b - 255));
+					newColor.r = (byte) (Mathf.Abs ((float)newColor.r - 255));
+
+					newColor.b = (byte) (Mathf.Abs ((float)newColor.b - 255));
 
 
 					if ((float)newColor.r < (float)newColor.b) {
@@ -171,7 +172,6 @@ namespace AssemblyCSharp
 
 					newColor.g = (byte)0f;
 
-					Debug.Log (newColor);
 					currentHex.myColor = newColor;
 					//currentHex.worldObject.GetComponent<Renderer> ().sharedMaterial.color = newColor;
 				}

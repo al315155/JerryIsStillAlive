@@ -64,7 +64,7 @@ public class Player : MonoBehaviour {
 	}
 
 	public void ActualizeLabels(){
-		unitLabel.text = "Units " + Squad.Count;
-		resourcesLabel.text = "Oxygen " + oxygen + "\t\t Enzymes " + enzymes;
+		//unitLabel.text = "Units " + Squad.Count;
+		//resourcesLabel.text = "Oxygen " + oxygen + "\t\t Enzymes " + enzymes;
 	}
 }

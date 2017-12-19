@@ -27,6 +27,8 @@ public class InfluenceMap : MonoBehaviour {
 
 		iG.InfluenceMask = influenceMask;
 		for (int i = 0; i < OriginatorObject.Count; i++) {
+			Debug.Log (OriginatorObject [i].transform.position);
+
 			iG.RegisterOriginator (OriginatorObject [i].GetComponent<Influencer>().originator);
 		}
 
@@ -65,5 +67,11 @@ public class InfluenceMap : MonoBehaviour {
 
 		InfluenceMapTexture.GetComponent<RawImage> ().texture = iG.InfluenceMapTexture;
 
+	}
+
+	void Update(){
+		iG.UpdateMap ();
+		iG.InfluenceMapTexture.Apply ();
+		InfluenceMapTexture.GetComponent<RawImage> ().texture = iG.InfluenceMapTexture;
 	}
 }

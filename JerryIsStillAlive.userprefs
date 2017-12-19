@@ -1,14 +1,16 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Reb Scripts\Influence Map\InfluenceMap.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Reb Scripts\Influence Map\InfluenceGrid.cs">
     <Files>
-      <File FileName="Assets\Scripts\Manu Scripts\Player.cs" Line="67" Column="1" />
+      <File FileName="Assets\Scripts\Manu Scripts\Player.cs" Line="68" Column="5" />
       <File FileName="Assets\Scripts\Reb Scripts\Pathfinding.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Álvaro Scripts\Hex.cs" Line="23" Column="2" />
-      <File FileName="Assets\Scripts\Reb Scripts\AdaptedMap.cs" Line="41" Column="4" />
-      <File FileName="Assets\Scripts\Reb Scripts\Influence Map\InfluenceGrid.cs" Line="133" Column="7" />
-      <File FileName="Assets\Scripts\Reb Scripts\Influence Map\InfluenceMap.cs" Line="63" Column="4" />
+      <File FileName="Assets\Scripts\Álvaro Scripts\Hex.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Reb Scripts\AdaptedMap.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Reb Scripts\Influence Map\InfluenceGrid.cs" Line="162" Column="1" />
+      <File FileName="Assets\Scripts\Reb Scripts\Influence Map\InfluenceMap.cs" Line="73" Column="19" />
       <File FileName="Assets\Scripts\Reb Scripts\Influence Map\InfluencePosition.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Reb Scripts\Influence Map\Influencer.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Reb Scripts\Influence Map\Originator.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
