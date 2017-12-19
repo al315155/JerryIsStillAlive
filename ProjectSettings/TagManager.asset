@@ -8,6 +8,11 @@ TagManager:
   - unit
   - Unit
   - Suelo
+  - nexo
+  - ParedSuperior
+  - ParedInferior
+  - ParedIzquierda
+  - ParedDerecha
   layers:
   - Default
   - TransparentFX

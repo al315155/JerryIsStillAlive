@@ -11,28 +11,37 @@ public class RTSCamera : MonoBehaviour {
 	public float xLimit, yLimit;
 
 	void Start () {
+
 	}
 
 	void LateUpdate () {
 
 		float actualX = GetComponent<Camera> ().ScreenToViewportPoint (Input.mousePosition).x;
 		float actualY = GetComponent<Camera> ().ScreenToViewportPoint (Input.mousePosition).y;
-			
-		if (actualX < xLimit) {
-			transform.position += Vector3.left * Time.deltaTime * velocity;
-		}
 
-		if (actualX > 1 - xLimit) {
+		if (actualX < xLimit && !CheckForEndOfMap ("ParedIzquierda")) {
+			transform.position += Vector3.left * Time.deltaTime * velocity;
+		} 
+		if (actualX > 1 - xLimit && !CheckForEndOfMap("ParedDerecha")) {
 			transform.position += Vector3.right * Time.deltaTime * velocity;
 		}
 
-		if (actualY < yLimit) {
+		if (actualY < yLimit && !CheckForEndOfMap("ParedInferior")) {
 			transform.position += Vector3.back * Time.deltaTime * velocity;
 		}
-
-		if (actualY > 1 - yLimit) {
+		if (actualY > 1 - yLimit && !CheckForEndOfMap("ParedSuperior")) {
 			transform.position += Vector3.forward * Time.deltaTime * velocity;
 		}
 
+	}
+
+	public bool CheckForEndOfMap(string tag){
+		RaycastHit ray;
+		if (Physics.Raycast (transform.position, transform.forward, out ray)) {
+			if (ray.collider.tag.Equals(tag)){
+				return true;
+			}
+		}
+		return false;
 	}
 }
