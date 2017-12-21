@@ -14,6 +14,9 @@ public class Unidad : MonoBehaviour
     public GameObject mySelf;
     public Player Owner;
 
+
+	public Resource resource;
+
 	public bool finished;
 
     [Header("UI")]
@@ -35,6 +38,9 @@ public class Unidad : MonoBehaviour
 	[Tooltip("Coste de enzimas para generar")]
 	public int costeEnzimas;
 
+	bool extractingOxygen;
+	bool extractingEnzymes;
+
 	void Awake(){
 		selectionManager = GameObject.Find ("Selection Manager").GetComponent<SelectionManager> ();
 		pathfinding = GetComponent<Pathfinding> ();
@@ -42,12 +48,8 @@ public class Unidad : MonoBehaviour
 
 	void Start ()
 	{
-//		if (unitType.Equals (TypeOfUnit.WalkableUnit)) {
-//			GameObject model = transform.GetChild (0).gameObject;
-//			for (int i = 0; i < model.transform.childCount; i++) {
-//				model.transform.GetChild (i).GetComponent<Renderer> ().material = this.Material;
-//			}
-//		}
+		extractingOxygen = false;
+		extractingEnzymes = false;
 
 		life = lifeSpawn;
 		finished = false;
@@ -58,6 +60,23 @@ public class Unidad : MonoBehaviour
         {
             Destroy(mySelf);
         }
+
+		if (resource != null) {
+			if (extractingOxygen) {
+				Owner.AddResources (ResourceType.oxygen, 1);
+				Owner.ActualizeLabels ();
+			}
+
+			if (extractingEnzymes) {
+				Owner.AddResources (ResourceType.enzyme, 1);
+				Owner.ActualizeLabels ();
+			}
+			
+		} else {
+			extractingOxygen = false;
+			extractingEnzymes = false;
+		}
+
 	}
 
 	public bool Finished {
@@ -97,6 +116,12 @@ public class Unidad : MonoBehaviour
 
 	//Walkable Functions!
 	public void DoAttack(Unidad unit){
+
+		if (extractingOxygen || extractingEnzymes) {
+			extractingEnzymes = false;
+			extractingOxygen = false;
+		}
+
         if (this.pathfinding.tileY % 2 == 0)
         {
             if ((unit.pathfinding.tileX == this.pathfinding.tileX - 1 && unit.pathfinding.tileY == this.pathfinding.tileY)||(unit.pathfinding.tileX == this.pathfinding.tileX-1 && unit.pathfinding.tileY == this.pathfinding.tileY+1)||(unit.pathfinding.tileX == this.pathfinding.tileX  && unit.pathfinding.tileY == this.pathfinding.tileY + 1)||(unit.pathfinding.tileX == this.pathfinding.tileX - 1 && unit.pathfinding.tileY == this.pathfinding.tileY - 1)||(unit.pathfinding.tileX == this.pathfinding.tileX  && unit.pathfinding.tileY == this.pathfinding.tileY - 1)||(unit.pathfinding.tileX == this.pathfinding.tileX +1 && unit.pathfinding.tileY == this.pathfinding.tileY ))
@@ -114,6 +139,13 @@ public class Unidad : MonoBehaviour
      }
 
 	public void DoMove(GameObject hitObject){
+
+
+		if (extractingOxygen || extractingEnzymes) {
+			extractingEnzymes = false;
+			extractingOxygen = false;
+		}
+
 		pathfinding.currentPath = null;
 		pathfinding.SetSelected (gameObject);
 		pathfinding.TileAction (hitObject);
@@ -127,17 +159,33 @@ public class Unidad : MonoBehaviour
 //        //unitTransform.position = new Vector3(unitTransform.position.x, unitTransform.position.y + margin + 1, unitTransform.position.z);
 //    }
 
-    public void DoWork(ResourceType _type)
+	public void DoWork(Resource resource, Hex placement)
     {
-        switch (_type)
-        {
-            case ResourceType.enzyme:
-                //TODO
-                break;
-            case ResourceType.oxygen:
-                //TODO
-                break;
-        }
+
+
+		if (extractingOxygen || extractingEnzymes) {
+			extractingEnzymes = false;
+			extractingOxygen = false;
+		}
+
+
+		transform.position = placement.worldPosition;
+		resource.StartExtracting ();
+		if (resource.resourceType.Equals (ResourceType.oxygen)) {
+			extractingOxygen = true;
+		} else {
+			extractingEnzymes = true;
+		}
+		this.resource = resource;
+//        switch (_type)
+//        {
+//            case ResourceType.enzyme:
+//                //TODO
+//                break;
+//            case ResourceType.oxygen:
+//                //TODO
+//                break;
+//        }
     }
 //
 //	public void Build(Unit building, Transform parent, Player currentPlayer){
@@ -151,22 +199,35 @@ public class Unidad : MonoBehaviour
 //	}
 
 	public void BuildUnit(GameObject newUnit, Hex placement){
+
+
+		if (extractingOxygen || extractingEnzymes) {
+			extractingEnzymes = false;
+			extractingOxygen = false;
+		}
+
+
 		// newUnit es un prefab. Hex es donde se ha clickado.
 		if( Owner.oxygen >= costeOxigeno && Owner.enzymes >= costeEnzimas)
 		{
-			GameObject newObject = Instantiate(newUnit/*, parent*/);
+			GameObject newObject = Instantiate(newUnit, placement.transform);
+
 			Unidad unit = newObject.GetComponent<Unidad>();
 
-			newObject.transform.position = placement.transform.position;
+			newObject.transform.position = placement.worldObject.transform.position;
 			newObject.SetActive (true);
-			newObject.GetComponent<Unidad> ().pathfinding.tileX = placement.tileX;
-			newObject.GetComponent<Unidad> ().pathfinding.tileY = placement.tileY;
 
-			newObject.transform.SetParent (placement.transform);
+			if (unit.unitType.Equals (TypeOfUnit.WalkableUnit)) {
+				newObject.GetComponent<Unidad> ().pathfinding.tileX = placement.tileX;
+				newObject.GetComponent<Unidad> ().pathfinding.tileY = placement.tileY;
+			} else {
+				iM.AddInfluencePoint (newObject);
+
+			}
+
 			unit.Owner = this.Owner;
 
 			Owner.Buy (unit);
-			iM.AddInfluencePoint (newObject);
 		}
 	}
 }

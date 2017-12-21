@@ -1,21 +1,26 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Reb Scripts\SelectionManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Reb Scripts\Unidad.cs">
     <Files>
-      <File FileName="Assets\Scripts\Reb Scripts\RTSCamera.cs" Line="79" Column="1" />
+      <File FileName="Assets\Scripts\Reb Scripts\RTSCamera.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Reb Scripts\Influence Map\Influencer.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Reb Scripts\Influence Map\InfluenceMap.cs" Line="34" Column="1" />
-      <File FileName="Assets\Scripts\Reb Scripts\Influence Map\InfluenceGrid.cs" Line="161" Column="8" />
-      <File FileName="Assets\Scripts\Reb Scripts\Unidad.cs" Line="177" Column="11" />
-      <File FileName="Assets\Scripts\Reb Scripts\SelectionManager.cs" Line="72" Column="1" />
-      <File FileName="Assets\Cuartel.cs" Line="29" Column="1" />
-      <File FileName="Assets\Scripts\Reb Scripts\Pathfinding.cs" Line="9" Column="19" />
-      <File FileName="Assets\Scripts\Manu Scripts\Player.cs" Line="73" Column="33" />
+      <File FileName="Assets\Scripts\Reb Scripts\Influence Map\InfluenceMap.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Reb Scripts\Influence Map\InfluenceGrid.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Reb Scripts\Unidad.cs" Line="209" Column="3" />
+      <File FileName="Assets\Scripts\Reb Scripts\SelectionManager.cs" Line="330" Column="1" />
+      <File FileName="Assets\Cuartel.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Reb Scripts\Pathfinding.cs" Line="40" Column="23" />
+      <File FileName="Assets\Scripts\Manu Scripts\Player.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Reb Scripts\Old_AdaptedMap.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Reb Scripts\AdaptedMap.cs" Line="931" Column="1" />
       <File FileName="Assets\Scripts\Reb Scripts\BasicCamera.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Manu Scripts\Resource.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Manu Scripts\Resource.cs" Line="36" Column="19" />
       <File FileName="Assets\Scripts\Reb Scripts\Influence Map\InfluencePosition.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Álvaro Scripts\Hex.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Manu Scripts\hexType.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Manu Scripts\GameManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Álvaro Scripts\Unit.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Álvaro Scripts\TileType.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

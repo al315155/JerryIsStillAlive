@@ -34,7 +34,7 @@ public class Pathfinding : MonoBehaviour
 
 		
 		}
-
+			
 		if (Vector3.Distance(transform.position, map.TileCoordToWorldCoord(tileX, tileY) + transform.up * 0.5f) < 0.1f)
 			AdvancePathing();
 		Vector3 nextPosition = map.TileCoordToWorldCoord (tileX, tileY) + transform.up * 0.5f;
