@@ -26,7 +26,7 @@ public class Unidad : MonoBehaviour
 	public Sprite icon;
 	public string kingdom;
 	public float lifeSpawn;
-	private float life;
+	public float life;
 
 	//para walkable
 	public Material Material;
@@ -135,7 +135,16 @@ public class Unidad : MonoBehaviour
         }
      }
 
-	public void DoMove(GameObject hitObject){
+    public void DoAttackInRange(Unidad unit, int Range)
+    {
+        if ((Mathf.Abs(this.pathfinding.tileX - unit.pathfinding.tileX) <= Range) &&
+             (Mathf.Abs(this.pathfinding.tileY - unit.pathfinding.tileY) <= Range))
+        {
+            unit.life -= this.damage;
+        }
+    }
+
+    public void DoMove(GameObject hitObject){
 
 		if (resource != null) {			
 			resource = null;
@@ -212,6 +221,9 @@ public class Unidad : MonoBehaviour
 			}
 
 			unit.Owner = this.Owner;
+            unit.finished = true;
+            unit.Owner.Squad.Add(unit);
+            Debug.Log("¡Me he alistado!");    
 
 			Owner.Buy (unit);
 		}

@@ -31,21 +31,26 @@ public class GameManager : MonoBehaviour {
     void Start () {
 		ActivePlayer = Jugador;
 		ActivePlayer.isMyTurn = true;
-		//PlayerText = TurnCanvas.transform.GetChild (1).GetComponent<Text> ();
-		//ShowCanvas ();
+		PlayerText = TurnCanvas.transform.GetChild (1).GetComponent<Text> ();
+		ShowCanvas ();
     }
 
 	public void ChangeTurn(){
 		if (ActivePlayer.Equals (Jugador)) {
+            Debug.Log("CAMBIO DE TURNO A CPU");
 			ActivePlayer = CPU;
 			CPU.ResetUnits ();
+            ShowCanvas();
 		} else {
-			ActivePlayer = Jugador;
+            Debug.Log("CAMBIO DE TURNO A JUGADOR");
+            ActivePlayer = Jugador;
 			Jugador.ResetUnits ();
-		}
+            ShowCanvas();
+        }
 	}
 
 	public void CheckPlayerTurn(){
+        Debug.Log("Compruebo turno");
 		if (ActivePlayer.isEndOfTurn ())
 			ChangeTurn ();
 	}

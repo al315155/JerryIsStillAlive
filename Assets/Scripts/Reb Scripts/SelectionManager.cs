@@ -4,15 +4,16 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System;
 
-public class SelectionManager : MonoBehaviour {
+public class SelectionManager : MonoBehaviour
+{
 
-	public Player player;
-	public Player cpu;
+    public Player player;
+    public Player cpu;
 
 
-	public GameObject UnitCanvas;
-	public GameObject currentSelected;
-	public TypeOfAction currentAction;
+    public GameObject UnitCanvas;
+    public GameObject currentSelected;
+    public TypeOfAction currentAction;
     public GameObject currentBuilding;
 
     public ResourceType currentResource;
@@ -23,30 +24,51 @@ public class SelectionManager : MonoBehaviour {
     public GameObject Worker;
     public GameObject currentUnit;
 
+    public int soldierRange;
+	public int turretRange;
+	public int workerRange;
 
-    public TypeOfAction CurrentAction{
-		get{ return currentAction; }
-		set{ currentAction = value; }
-	}
-
-	public GameObject CurrentSelected{
-		get{ return currentSelected; }
-		set{ currentSelected = value; }
-	}
-
-	void Start () {
-		UnitCanvas.SetActive (false);
-	}
+	[Tooltip("Proyectil de disparo desde la torreta")]
+	public GameObject proyectil;
+    [Tooltip("Velocidad de proyectil")]
+	public float projectileSpeed;
 
 
+    public TypeOfAction CurrentAction
+    {
+        get { return currentAction; }
+        set { currentAction = value; }
+    }
 
-	public GameObject map;
+    public GameObject CurrentSelected
+    {
+        get { return currentSelected; }
+        set { currentSelected = value; }
+    }
 
-	void Update () {
+    void Start()
+    {
+        UnitCanvas.SetActive(false);
+        mapaHex = map.GetComponent<AdaptedMap>().map;
+    }
 
-//		if (!currentAction.Equals(TypeOfAction.None)){}
 
-       if (EventSystem.current.IsPointerOverGameObject())
+    public void disparar(GameObject objetivo){
+        GameObject bala = Instantiate(proyectil, this.gameObject.transform);
+        bala.transform.LookAt(objetivo.transform);
+        bala.GetComponent<Rigidbody>().velocity = bala.transform.forward* projectileSpeed;
+    }
+
+    public GameObject map;
+    Hex[,] mapaHex;
+    public Color colorAtaque;
+
+    void Update()
+    {
+
+        //		if (!currentAction.Equals(TypeOfAction.None)){}
+
+        if (EventSystem.current.IsPointerOverGameObject())
         {
             return;
         }
@@ -57,9 +79,9 @@ public class SelectionManager : MonoBehaviour {
         if (Physics.Raycast(ray, out hitInfo))
         {
             GameObject hitObject = hitInfo.collider.gameObject;
-            if(Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0))
             {
-				Manage (hitObject);
+                Manage(hitObject);
             }
         }
     }
@@ -67,25 +89,26 @@ public class SelectionManager : MonoBehaviour {
     public void setCurrentBuilding(GameObject building)
     {
         this.currentBuilding = building;
-		Debug.Log (currentBuilding);
+        Debug.Log(currentBuilding);
 
     }
 
     public void setCurrentUnit(GameObject unit)
     {
         this.currentUnit = unit;
-//        this.currentUnit.GetComponent<Pathfinding>().tileX = map.GetComponent<AdaptedMap>().map[currentSelected.GetComponent<Pathfinding>().tileX, currentSelected.GetComponent<Pathfinding>().tileY].tileX + 2;
-//        this.currentUnit.GetComponent<Pathfinding>().tileY = map.GetComponent<AdaptedMap>().map[currentSelected.GetComponent<Pathfinding>().tileX, currentSelected.GetComponent<Pathfinding>().tileY].tileY;
-//        Instantiate(currentUnit);
-//        currentSelected.GetComponent<Unidad>().Finished = true;
-//        UnitCanvas.SetActive(false);
-//        currentSelected = null;
-        
+        //        this.currentUnit.GetComponent<Pathfinding>().tileX = map.GetComponent<AdaptedMap>().map[currentSelected.GetComponent<Pathfinding>().tileX, currentSelected.GetComponent<Pathfinding>().tileY].tileX + 2;
+        //        this.currentUnit.GetComponent<Pathfinding>().tileY = map.GetComponent<AdaptedMap>().map[currentSelected.GetComponent<Pathfinding>().tileX, currentSelected.GetComponent<Pathfinding>().tileY].tileY;
+        //        Instantiate(currentUnit);
+        //        currentSelected.GetComponent<Unidad>().Finished = true;
+        //        UnitCanvas.SetActive(false);
+        //        currentSelected = null;
+
     }
 
-    private void SwitchPanel(Unidad unit){
+    private void SwitchPanel(Unidad unit)
+    {
 
-		unit.Panel.gameObject.SetActive (true);
+        unit.Panel.gameObject.SetActive(true);
 
         if (unit.Panel.name.Equals("Worker Panel"))
         {
@@ -131,227 +154,298 @@ public class SelectionManager : MonoBehaviour {
             UnitCanvas.transform.GetChild(4).gameObject.SetActive(false);
 
         }
-        else { 
+        else
+        {
             UnitCanvas.transform.GetChild(0).gameObject.SetActive(false);
             UnitCanvas.transform.GetChild(1).gameObject.SetActive(false);
             UnitCanvas.transform.GetChild(2).gameObject.SetActive(false);
             UnitCanvas.transform.GetChild(4).gameObject.SetActive(false);
-			UnitCanvas.transform.GetChild(5).gameObject.SetActive(false);
+            UnitCanvas.transform.GetChild(5).gameObject.SetActive(false);
         }
-	}
+    }
 
-	private void ActualizePanel(Unidad unit){
-		Debug.Log ("actualizo panel");
-		SwitchPanel (unit);
+    public void plotCellsInRange(GameObject g, int range, Color c)
+    {
+        Hex h = g.GetComponent<Hex>();
+        GameObject child = g.transform.FindChild("Hexa").gameObject;
+        child.transform.GetChild(0).GetComponent<Renderer>().material.color = c;
+        if (range >= 1)
+        {
+            if (h.tileY - 1 >= 0)
+            {
+                if (h.tileX - 1 >= 0) plotCellsInRange(mapaHex[h.tileX - 1, h.tileY - 1].gameObject, range - 1, c);
+                plotCellsInRange(mapaHex[h.tileX, h.tileY - 1].gameObject, range - 1, c);
+            }
+            if (h.tileY + 1 < mapaHex.GetLength(1))
+            {
+                if (h.tileX + 1 < mapaHex.GetLength(0)) plotCellsInRange(mapaHex[h.tileX + 1, h.tileY + 1].gameObject, range - 1, c);
+                plotCellsInRange(mapaHex[h.tileX, h.tileY + 1].gameObject, range - 1, c);
+            }
+            if (h.tileX + 1 < mapaHex.GetLength(0)) plotCellsInRange(mapaHex[h.tileX + 1, h.tileY].gameObject, range - 1, c);
+            if (h.tileX - 1 >= 0) plotCellsInRange(mapaHex[h.tileX - 1, h.tileY].gameObject, range - 1, c);
+        }
+    }
 
-		if (unit.UnitType.Equals (TypeOfUnit.WalkableUnit) || unit.UnitType.Equals(TypeOfUnit.Turret)) {			
-			unit.Panel.transform.Find ("Icon").GetComponent<Image> ().sprite = unit.Icon;
-			unit.Panel.transform.Find ("Kingdom").GetComponent<Text> ().text = unit.Kingodm;
-			unit.Panel.transform.Find ("Damage").GetComponent<Text> ().text = unit.Damage.ToString ();
-		} 
-		else {
-			unit.Panel.transform.Find ("Icon").GetComponent<Image> ().sprite = unit.Icon;
-			unit.Panel.transform.Find ("Kingdom").GetComponent<Text> ().text = unit.Kingodm;
-		}
-	}
+    private void ActualizePanel(Unidad unit)
+    {
+        Debug.Log("actualizo panel");
+        SwitchPanel(unit);
 
-	public void Manage(GameObject objective){
+        if (unit.UnitType.Equals(TypeOfUnit.WalkableUnit) || unit.UnitType.Equals(TypeOfUnit.Turret))
+        {
+            unit.Panel.transform.Find("Icon").GetComponent<Image>().sprite = unit.Icon;
+            unit.Panel.transform.Find("Kingdom").GetComponent<Text>().text = unit.Kingodm;
+            unit.Panel.transform.Find("Damage").GetComponent<Text>().text = unit.Damage.ToString();
+            //plotCellsInRange(unit.transform.parent.gameObject.transform.parent.gameObject, soldierRange, colorAtaque);
+        }
+        else
+        {
+            unit.Panel.transform.Find("Icon").GetComponent<Image>().sprite = unit.Icon;
+            unit.Panel.transform.Find("Kingdom").GetComponent<Text>().text = unit.Kingodm;
+            //plotCellsInRange(unit.transform.parent.gameObject.transform.parent.gameObject, turretRange, colorAtaque);
+        }
+    }
 
-		//Si no hay nada seleccionado previamente a este click
-		if (currentSelected == null) 
-		{
-			//las unidades son edificios obreros soldados
-			if (objective.tag.Equals ("Unit")) {
-				currentSelected = objective;
-				//si no habia nada seleccionado el Canvas se encuentra desactivado
-				//por lo que se activa y se actualiza el panel para la unidad actual
-				UnitCanvas.SetActive (true);
-				ActualizePanel (objective.GetComponent<Unidad> ());
-			}
-          	
+    public void Manage(GameObject objective)
+    {
 
-		} 
+        //Si no hay nada seleccionado previamente a este click
+        if (currentSelected == null)
+        {
+            //las unidades son edificios obreros soldados
+            if (objective.tag.Equals("Unit"))
+            {
+                currentSelected = objective;
+                //si no habia nada seleccionado el Canvas se encuentra desactivado
+                //por lo que se activa y se actualiza el panel para la unidad actual
+                UnitCanvas.SetActive(true);
+                ActualizePanel(objective.GetComponent<Unidad>());
+            }
 
-		//Si ya tenemos una unidad seleccionada 
-		else 
-		{
-			Unidad unitActor = currentSelected.GetComponent<Unidad> ();
 
-			//Si lo que se ha seleccionado ahora es una unidad
-			if (objective.tag.Equals ("Unit")) {
+        }
 
-				Unidad unitReceptor = objective.GetComponent<Unidad> ();
+        //Si ya tenemos una unidad seleccionada 
+        else
+        {
+            Unidad unitActor = currentSelected.GetComponent<Unidad>();
 
-				// ¿es una unidad aliada o una unidad enemiga?
-				if (unitActor.Kingodm.Equals (unitReceptor.Kingodm)) {
+            //Si lo que se ha seleccionado ahora es una unidad
+            if (objective.tag.Equals("Unit"))
+            {
 
-					//Si son aliados, se cambiará la unidad actual por
-					//la última seleccionada, y se ignorará cualquier
-					//acción que estuviese realizando la anterior
-					currentSelected = unitReceptor.gameObject;
-					currentAction = TypeOfAction.None;
+                Unidad unitReceptor = objective.GetComponent<Unidad>();
 
-					//Por último actualizamos el canvas, para mostrar
-					//la información de la nueva unidad clickada
-					ActualizePanel (unitReceptor);
-				} else {
+                // ¿es una unidad aliada o una unidad enemiga?
+                if (unitActor.Kingodm.Equals(unitReceptor.Kingodm))
+                {
 
-					//Si es un enemigo lo clickado, verificamos que lo anterior sea
-					//un obrero o soldaod pues lo unico que podemos hacer es atacar
-					if (unitActor.UnitType.Equals (TypeOfUnit.WalkableUnit) || unitActor.UnitType.Equals(TypeOfUnit.Turret)) {
-						if (currentAction.Equals (TypeOfAction.Attack)) {
-							unitActor.DoAttack (unitReceptor);
-							unitActor.Finished = true;
-						}
+                    //Si son aliados, se cambiará la unidad actual por
+                    //la última seleccionada, y se ignorará cualquier
+                    //acción que estuviese realizando la anterior
+                    currentSelected = unitReceptor.gameObject;
+                    currentAction = TypeOfAction.None;
 
-						//tanto como si hemos atacado, como si la acción seleccionada
-						//era moverse o trabajar sobre (cosa que no puede hacerse en una
-						//unidad enemiga), eliminamos toda acción
-						currentAction = TypeOfAction.None;
-					}
+                    //Por último actualizamos el canvas, para mostrar
+                    //la información de la nueva unidad clickada
+                    ActualizePanel(unitReceptor);
+                }
+                else
+                {
 
-				}
-			}
+                    //Si es un enemigo lo clickado, verificamos que lo anterior sea
+                    //un obrero o soldaod pues lo unico que podemos hacer es atacar
+                    if (unitActor.UnitType.Equals(TypeOfUnit.WalkableUnit) || unitActor.UnitType.Equals(TypeOfUnit.Turret))
+                    {
+                        if (currentAction.Equals(TypeOfAction.Attack))
+                        {
+                            if (unitActor.UnitType.Equals(TypeOfUnit.WalkableUnit))
+                            {
+                                Debug.Log("¡ATACO!");
+                                unitActor.DoAttackInRange(unitReceptor, soldierRange);
+                            }
+                            else
+                            {
+                                Debug.Log("¡ATACO!");
+                                unitActor.DoAttackInRange(unitReceptor, turretRange);
+                            }
+                            //unitActor.DoAttack(unitReceptor);
+                            unitActor.Finished = true;
+                        }
 
-			//Si lo que se ha seleccionado NO es una unidad (o suelo o recurso)
-			else {
+                        //tanto como si hemos atacado, como si la acción seleccionada
+                        //era moverse o trabajar sobre (cosa que no puede hacerse en una
+                        //unidad enemiga), eliminamos toda acción
+                        currentAction = TypeOfAction.None;
+                    }
 
-				//Si la unidad anteriormente seleccionada es obrera o soldado
-				if (unitActor.UnitType.Equals (TypeOfUnit.WalkableUnit)) {
+                }
+            }
 
-					if (objective.tag.Equals ("Suelo")) {
-						Debug.Log (currentAction);
+            //Si lo que se ha seleccionado NO es una unidad (o suelo o recurso)
+            else
+            {
 
-						switch (currentAction) {
-						case TypeOfAction.Move:
-							unitActor.DoMove (objective);
-							currentSelected = null;
-							UnitCanvas.SetActive (false);
-							unitActor.Finished = true;
-							break;
+                //Si la unidad anteriormente seleccionada es obrera o soldado
+                if (unitActor.UnitType.Equals(TypeOfUnit.WalkableUnit))
+                {
 
-						case TypeOfAction.WorkOn:
-							if ((objective.transform.parent.Find ("oxigeno") != null || objective.transform.parent.Find ("campoencimas") != null)) {
-								List<Hex> totalHexes = objective.GetComponentInParent<Hex> ().neighbors;
-								List<Hex> freeHexes = new List<Hex> ();
+                    if (objective.tag.Equals("Suelo"))
+                    {
+                        Debug.Log(currentAction);
 
-								bool occupied;
-								for (int i = 0; i < totalHexes.Count; i++) {
-									occupied = false;
-									for (int j = 0; j < player.Squad.Count; j++) {
-										if (totalHexes [i].tileX == player.Squad [i].GetComponent<Pathfinding> ().tileX &&
-										    totalHexes [i].tileY == player.Squad [i].GetComponent<Pathfinding> ().tileY) {
-											occupied = true;
-											break;
-										}
-									}
-									if (!occupied) {
-										freeHexes.Add (totalHexes [i]);
-									}
-								}
+                        switch (currentAction)
+                        {
+                            case TypeOfAction.Move:
+                                if (!unitActor.Finished)
+                                {
+                                    unitActor.DoMove(objective);
+                                    currentSelected = null;
+                                    UnitCanvas.SetActive(false);
+                                    unitActor.Finished = true;
+                                }
+                                break;
 
-								totalHexes = freeHexes;
-								freeHexes = new List<Hex> ();
+                            case TypeOfAction.WorkOn:
+                                if ((objective.transform.parent.Find("oxigeno") != null || objective.transform.parent.Find("campoencimas") != null))
+                                {
+                                    List<Hex> totalHexes = objective.GetComponentInParent<Hex>().neighbors;
+                                    List<Hex> freeHexes = new List<Hex>();
 
-								for (int i = 0; i < totalHexes.Count; i++) {
-									occupied = false;
-									for (int j = 0; j < cpu.Squad.Count; j++) {
-										if (totalHexes [i].tileX == cpu.Squad [i].GetComponent<Pathfinding> ().tileX &&
-										    totalHexes [i].tileY == cpu.Squad [i].GetComponent<Pathfinding> ().tileY) {
-											occupied = true;
-											break;
-										}
-									}
-									if (!occupied) {
-										freeHexes.Add (totalHexes [i]);
-									}
-								}
+                                    bool occupied;
+                                    for (int i = 0; i < totalHexes.Count; i++)
+                                    {
+                                        occupied = false;
+                                        for (int j = 0; j < player.Squad.Count; j++)
+                                        {
+                                            if (totalHexes[i].tileX == player.Squad[i].GetComponent<Pathfinding>().tileX &&
+                                                totalHexes[i].tileY == player.Squad[i].GetComponent<Pathfinding>().tileY)
+                                            {
+                                                occupied = true;
+                                                break;
+                                            }
+                                        }
+                                        if (!occupied)
+                                        {
+                                            freeHexes.Add(totalHexes[i]);
+                                        }
+                                    }
 
-								if (freeHexes.Count > 0) {
-									unitActor.DoWork (objective.transform.parent.GetComponentInChildren<Resource> (), freeHexes [UnityEngine.Random.Range (0, freeHexes.Count - 1)]);
+                                    totalHexes = freeHexes;
+                                    freeHexes = new List<Hex>();
 
-								}
+                                    for (int i = 0; i < totalHexes.Count; i++)
+                                    {
+                                        occupied = false;
+                                        for (int j = 0; j < cpu.Squad.Count; j++)
+                                        {
+                                            if (totalHexes[i].tileX == cpu.Squad[i].GetComponent<Pathfinding>().tileX &&
+                                                totalHexes[i].tileY == cpu.Squad[i].GetComponent<Pathfinding>().tileY)
+                                            {
+                                                occupied = true;
+                                                break;
+                                            }
+                                        }
+                                        if (!occupied)
+                                        {
+                                            freeHexes.Add(totalHexes[i]);
+                                        }
+                                    }
 
-								currentSelected = null;
-								UnitCanvas.SetActive (false);
-							}
-							//unitActor.DoWork (currentBuilding, objective.transform.parent.transform, GameManager.Instance.ActivePlayer);
-							break;
+                                    if (freeHexes.Count > 0)
+                                    {
+                                        unitActor.DoWork(objective.transform.parent.GetComponentInChildren<Resource>(), freeHexes[UnityEngine.Random.Range(0, freeHexes.Count - 1)]);
 
-						case TypeOfAction.Attack:
-							break;
+                                    }
 
-						case TypeOfAction.Build:
-							unitActor.BuildUnit (currentBuilding, objective.GetComponentInParent<Hex> ());
-							currentSelected = null;
-							UnitCanvas.SetActive (false);
-							unitActor.Finished = true;
-							break;
+                                    currentSelected = null;
+                                    UnitCanvas.SetActive(false);
+                                }
+                                //unitActor.DoWork (currentBuilding, objective.transform.parent.transform, GameManager.Instance.ActivePlayer);
+                                break;
 
-						default:
-							currentSelected = null;
-							UnitCanvas.SetActive (false);
-							break;
+                            case TypeOfAction.Attack:
+                                break;
 
-						}
-						currentAction = TypeOfAction.None;
-					}
-//                    else if (objective.tag.Equals("Recursos")) {
-//                        if (currentAction.Equals(TypeOfAction.WorkOn)) {
-////                            unitActor.DoWork(currentResource);
-////                            unitActor.Finished = true;
-//
-//                        } else {
-////                            currentSelected = null;
-////                            UnitCanvas.SetActive(false);
-//                        }
-//                    }
-				}
+                            case TypeOfAction.Build:
+                                unitActor.BuildUnit(currentBuilding, objective.GetComponentInParent<Hex>());
+                                currentSelected = null;
+                                UnitCanvas.SetActive(false);
+                                unitActor.Finished = true;
+                                break;
 
-					//tanto como si acierta en la ejecución de la acción, como si selecciona algo
-					//que no se empareja con su acción, eliminamos la acción actual
-				
-				else if (unitActor.UnitType.Equals (TypeOfUnit.Nexus) && objective.tag.Equals("Suelo")) {
-					if (currentAction.Equals (TypeOfAction.Build)) {
-						Debug.Log (objective);
-						unitActor.BuildUnit (Worker, objective.GetComponentInParent<Hex> ());
-					}
-					currentSelected = null;
-					UnitCanvas.SetActive (false);
-					unitActor.Finished = true;
-				} else if (unitActor.UnitType.Equals (TypeOfUnit.Barracks) && objective.tag.Equals("Suelo")) {
-					if (currentAction.Equals (TypeOfAction.Build)) {
-						unitActor.BuildUnit (Soldier, objective.GetComponentInParent<Hex> ());
-					}
-					currentSelected = null;
-					UnitCanvas.SetActive (false);
-					unitActor.Finished = true;
-				}
+                            default:
+                                currentSelected = null;
+                                UnitCanvas.SetActive(false);
+                                break;
 
-				else {
-					//si es edificio, quitamos la selección
-					currentSelected = null;
-					UnitCanvas.SetActive(false);
-				}
-			}
-		}
-	}
+                        }
+                        currentAction = TypeOfAction.None;
+                    }
+                    //                    else if (objective.tag.Equals("Recursos")) {
+                    //                        if (currentAction.Equals(TypeOfAction.WorkOn)) {
+                    ////                            unitActor.DoWork(currentResource);
+                    ////                            unitActor.Finished = true;
+                    //
+                    //                        } else {
+                    ////                            currentSelected = null;
+                    ////                            UnitCanvas.SetActive(false);
+                    //                        }
+                    //                    }
+                }
 
-	//Walkable Functions Button!
-	public void Move ()
-	{
-		currentAction = TypeOfAction.Move;
-	}
+                //tanto como si acierta en la ejecución de la acción, como si selecciona algo
+                //que no se empareja con su acción, eliminamos la acción actual
 
-	public void WorkOn ()
-	{
-		currentAction = TypeOfAction.WorkOn;
-	}
+                else if (unitActor.UnitType.Equals(TypeOfUnit.Nexus) && objective.tag.Equals("Suelo"))
+                {
+                    if (currentAction.Equals(TypeOfAction.Build))
+                    {
+                        Debug.Log(objective);
+                        unitActor.BuildUnit(Worker, objective.GetComponentInParent<Hex>());
+                    }
+                    currentSelected = null;
+                    UnitCanvas.SetActive(false);
+                    unitActor.Finished = true;
+                    GameManager.Instance.CheckPlayerTurn();
+                }
+                else if (unitActor.UnitType.Equals(TypeOfUnit.Barracks) && objective.tag.Equals("Suelo"))
+                {
+                    if (currentAction.Equals(TypeOfAction.Build))
+                    {
+                        unitActor.BuildUnit(Soldier, objective.GetComponentInParent<Hex>());
+                    }
+                    currentSelected = null;
+                    UnitCanvas.SetActive(false);
+                    unitActor.Finished = true;
+                    GameManager.Instance.CheckPlayerTurn();
+                }
 
-	public void Attack ()
-	{
-		currentAction = TypeOfAction.Attack;
-	}
+                else
+                {
+                    //si es edificio, quitamos la selección
+                    currentSelected = null;
+                    UnitCanvas.SetActive(false);
+                }
+            }
+        }
+    }
+
+    //Walkable Functions Button!
+    public void Move()
+    {
+        currentAction = TypeOfAction.Move;
+    }
+
+    public void WorkOn()
+    {
+        currentAction = TypeOfAction.WorkOn;
+    }
+
+    public void Attack()
+    {
+        currentAction = TypeOfAction.Attack;
+    }
 
     public void Build()
     {
