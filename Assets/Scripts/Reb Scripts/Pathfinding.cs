@@ -62,7 +62,6 @@ public class Pathfinding : MonoBehaviour
 		if (currentPath.Count == 1)
 		{
 			currentPath = null;
-			Debug.Log ("findepath");
 		}
 	}
 
@@ -71,7 +70,6 @@ public class Pathfinding : MonoBehaviour
 		
 		while (currentPath != null && remainingMovement > 0)
 		{
-			Debug.Log ("Mal parido");
 			AdvancePathing();
 		}
 

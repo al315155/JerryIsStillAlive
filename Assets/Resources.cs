@@ -8,6 +8,8 @@ public class Resources : MonoBehaviour {
 	private List<Vector2> resourcesPos;
 	public AdaptedMap map;
 
+	public Hex resourceTile;
+
 	public void GetResources(){
 		Resource[] list = map.gameObject.transform.GetComponentsInChildren<Resource> ();
 		for (int i = 0; i < list.Length; i++) {
@@ -23,6 +25,7 @@ public class Resources : MonoBehaviour {
 	void Update () {
 		
 	}
+
 
 	public Hex GetNearerResourcePoint(Unidad unit){
 

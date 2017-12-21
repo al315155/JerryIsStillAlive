@@ -13,6 +13,7 @@ public class StateController : MonoBehaviour {
 	public State remainState;
 
 	public Resources resources;
+	public Resource myResource;
 	
     public string currentStateName;
 
@@ -20,8 +21,10 @@ public class StateController : MonoBehaviour {
 
 	//Sensors
 	
+	public Hex destination;
 
-	
+	public float resourceTimer = 2f;
+	public float time;
    
    
     public GameObject player;
@@ -34,9 +37,10 @@ public class StateController : MonoBehaviour {
 
 	void Awake()
 	{
+		myResource = null;
 		chaseTarget = null;
 
-
+		time = 0f;
 	
 
 		
@@ -52,6 +56,7 @@ public class StateController : MonoBehaviour {
 
 	void Update()
 	{
+		
         //TODO: Cambiar esto con listeners para que sea más eficiente.
         //if (isPlayerOnSight || isPlayerHeard) navMeshAgent.speed = acceleration_speed;
         //else navMeshAgent.speed = basic_speed;
