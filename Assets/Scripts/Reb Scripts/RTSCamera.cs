@@ -77,7 +77,5 @@ public class RTSCamera : MonoBehaviour {
 		else
 			blocked_up = false;
 
-		Debug.Log (blocked_left);
-		Debug.Log (blocked_up);
 	}
 }

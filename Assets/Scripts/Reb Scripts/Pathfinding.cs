@@ -14,6 +14,9 @@ public class Pathfinding : MonoBehaviour
 		map = GameObject.Find("New Map").GetComponent<AdaptedMap> ();
 	}
 
+	void Start(){
+	}
+
 	void Update()
 	{
 		if (currentPath != null)
@@ -28,6 +31,8 @@ public class Pathfinding : MonoBehaviour
 
 				currNode++;
 			}
+
+		
 		}
 
 		if (Vector3.Distance(transform.position, map.TileCoordToWorldCoord(tileX, tileY) + transform.up * 0.5f) < 0.1f)
@@ -41,10 +46,11 @@ public class Pathfinding : MonoBehaviour
 		if (currentPath == null)
 			return;
 
-		if (remainingMovement <= 0)
+		if (remainingMovement <= 0) {
 			return;
+		}
 
-		transform.position = map.TileCoordToWorldCoord(tileX, tileY) + transform.up * 0.5f;
+		//transform.position = map.TileCoordToWorldCoord(tileX, tileY) + transform.up * 0.5f;
 
 		remainingMovement -= map.CostToEnterTile(currentPath[0].x, currentPath[0].y, currentPath[1].x, currentPath[1].y);
 
@@ -56,6 +62,7 @@ public class Pathfinding : MonoBehaviour
 		if (currentPath.Count == 1)
 		{
 			currentPath = null;
+			Debug.Log ("findepath");
 		}
 	}
 

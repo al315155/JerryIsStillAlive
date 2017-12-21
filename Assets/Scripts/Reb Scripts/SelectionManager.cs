@@ -222,15 +222,18 @@ public class SelectionManager : MonoBehaviour {
                                 UnitCanvas.SetActive(false);
                                 unitActor.Finished = true;
                                 break;
+
                             case TypeOfAction.WorkOn:
                                 unitActor.DoWork(currentBuilding, objective.transform.parent.transform, GameManager.Instance.ActivePlayer);
                                 break;
+
                             case TypeOfAction.Attack:
                                 break;
 
                             case TypeOfAction.Build:
                                 unitActor.DoWork(currentUnit, objective.transform.parent.transform, GameManager.Instance.ActivePlayer);
                                 break;
+
                             default:
                                 currentSelected = null;
                                 UnitCanvas.SetActive(false);

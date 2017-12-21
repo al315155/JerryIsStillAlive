@@ -74,6 +74,7 @@
      <Compile Include="Assets\Scripts\Reb Scripts\Influence Map\InfluencePosition.cs" />
      <Compile Include="Assets\Scripts\Reb Scripts\Influence Map\Influencer.cs" />
      <Compile Include="Assets\Scripts\Reb Scripts\Influence Map\Originator.cs" />
+     <Compile Include="Assets\Scripts\Reb Scripts\Old_AdaptedMap.cs" />
      <Compile Include="Assets\Scripts\Reb Scripts\Pathfinding.cs" />
      <Compile Include="Assets\Scripts\Reb Scripts\RTSCamera.cs" />
      <Compile Include="Assets\Scripts\Reb Scripts\SelectionManager.cs" />

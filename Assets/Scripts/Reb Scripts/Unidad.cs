@@ -29,6 +29,7 @@ public class Unidad : MonoBehaviour
 	Pathfinding pathfinding;
 
 
+
 	void Awake(){
 		selectionManager = GameObject.Find ("Selection Manager").GetComponent<SelectionManager> ();
 		pathfinding = GetComponent<Pathfinding> ();
@@ -45,6 +46,7 @@ public class Unidad : MonoBehaviour
 
 		life = lifeSpawn;
 		finished = false;
+
 	}
 
 	void Update(){
@@ -113,6 +115,7 @@ public class Unidad : MonoBehaviour
      }
 
 	public void DoMove(GameObject hitObject){
+		pathfinding.currentPath = null;
 		pathfinding.SetSelected (gameObject);
 		pathfinding.TileAction (hitObject);
 		pathfinding.NextTurn ();

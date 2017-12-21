@@ -69,7 +69,7 @@ namespace AssemblyCSharp
 			for (int i = 0; i < map.map.GetLength (0); i++) {
 				for (int j = 0; j < map.map.GetLength (1); j++) {
 					map.map [i, j].influences.Clear ();
-					map.map [i, j].myColor = Color.black;
+					map.map [i, j].myColor = Color.white;
 			
 //					if (map.map [i, j].worldObject.GetComponent<Renderer> ().enabled) {
 //						map.map [i, j].worldObject.GetComponent<Renderer> ().material.color = Color.black;
@@ -80,8 +80,6 @@ namespace AssemblyCSharp
 
 			for (int i = 0; i < m_OriginatorList.Count; i++) {
 
-
-				Debug.Log (m_OriginatorList [i].worldPosition);
 
 				Collider[] influencePositions = Physics.OverlapSphere (m_OriginatorList [i].worldPosition, m_OriginatorList [i].influenceRange, InfluenceMask);
 
@@ -113,21 +111,27 @@ namespace AssemblyCSharp
 						influencePositions [j].GetComponentInParent<InfluencePosition> ().Hexes [1]
 								].HasInfluenceOfType (m_OriginatorList [i].type)) 
 					{
-						map.map [influencePositions [j].GetComponentInParent<InfluencePosition> ().Hexes [0], 
-							influencePositions [j].GetComponentInParent<InfluencePosition> ().Hexes [1]]
+
+							map.map [influencePositions [j].GetComponentInParent<InfluencePosition> ().Hexes [0], 
+								influencePositions [j].GetComponentInParent<InfluencePosition> ().Hexes [1]]
 								.influences.Add (
-									new KeyValuePair<int, float> (m_OriginatorList [i].type, 
-									((1/(Vector3.Distance (m_OriginatorList [i].worldPosition, influencePositions [j].transform.position)))) / m_OriginatorList [i].influenceRange));
+								new KeyValuePair<int, float> (m_OriginatorList [i].type, 
+									((1 / (Vector3.Distance (m_OriginatorList [i].worldPosition, influencePositions [j].transform.position)))) / m_OriginatorList [i].influenceRange));
+
 					} else {
 						KeyValuePair<int, float> iPos = map.map [influencePositions [j].GetComponentInParent<InfluencePosition> ().Hexes [0],
 							influencePositions [j].GetComponentInParent<InfluencePosition> ().Hexes [1]].GetInfluenceOfType (m_OriginatorList [i].type);
 					
 						if (iPos.Value != -1) {
-							map.map [influencePositions [j].GetComponentInParent<InfluencePosition> ().Hexes [0], 
-								influencePositions [j].GetComponentInParent<InfluencePosition> ().Hexes [1]].influences [iPos.Key] = 
+
+
+
+								map.map [influencePositions [j].GetComponentInParent<InfluencePosition> ().Hexes [0], 
+									influencePositions [j].GetComponentInParent<InfluencePosition> ().Hexes [1]].influences [iPos.Key] = 
 									
 									new KeyValuePair<int, float> (m_OriginatorList [i].type, iPos.Value +
-									((1/(Vector3.Distance (m_OriginatorList [i].worldPosition, influencePositions [j].transform.position))) /m_OriginatorList [i].influenceRange));
+								((1 / (Vector3.Distance (m_OriginatorList [i].worldPosition, influencePositions [j].transform.position))) / m_OriginatorList [i].influenceRange));
+
 						}
 					}
 					// no se fusionan bien los colores
@@ -140,6 +144,7 @@ namespace AssemblyCSharp
 						if (currentHex.influences [k].Key == 0) {
 							//newColor += (((Color)m_OriginatorList [i].color) * (currentHex.influences [k].Value) * (m_OriginatorList [i].influence));
 							newColor.r -= (byte) (255 * (currentHex.influences [k].Value) * (m_OriginatorList [i].influence));
+
 						}
 
 						if (currentHex.influences [k].Key == 1) {
@@ -156,18 +161,23 @@ namespace AssemblyCSharp
 //					currentHex.myColor += ((Color)m_OriginatorList [i].color) * (currentHex.influences [k].Value) * (m_OriginatorList [i].influence);
 //					
 					}
-					newColor.r = (byte) (Mathf.Abs ((float)newColor.r - 255));
+				
+//					newColor.r = (byte)(Mathf.Abs (255 - (float)newColor.r));
+//					newColor.b = (byte)(Mathf.Abs (255 - (float)newColor.b));
 
-					newColor.b = (byte) (Mathf.Abs ((float)newColor.b - 255));
 
 
 					if ((float)newColor.r < (float)newColor.b) {
-						newColor.r = (byte)0f;
+
+							newColor.r = (byte)0f;
+						
 
 					} else if ((float)newColor.r > (float)newColor.b){
 						newColor.b = (byte)0f;
 
 					}
+
+
 
 
 					newColor.g = (byte)0f;
