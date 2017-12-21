@@ -27,13 +27,14 @@ public class Unidad : MonoBehaviour
 	public string kingdom;
 	public float lifeSpawn;
 	private float life;
+    public GameObject mapa;
 
 	//para walkable
 	public Material Material;
 	public int range;
 	public float damage;
 
-	Pathfinding pathfinding;
+	[HideInInspector]public Pathfinding pathfinding;
 
 	[Tooltip("Coste de oxigeno para generar")]
 	public int costeOxigeno;
