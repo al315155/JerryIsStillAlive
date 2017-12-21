@@ -27,31 +27,45 @@ public class InfluenceMap : MonoBehaviour {
 
 		iG.InfluenceMask = influenceMask;
 		for (int i = 0; i < OriginatorObject.Count; i++) {
-			Debug.Log (OriginatorObject [i].transform.position);
 
 			iG.RegisterOriginator (OriginatorObject [i].GetComponent<Influencer>().originator);
 		}
 
-		iG.UpdateMap ();
-
-
-		iG.InfluenceMapTexture.Apply ();
-
-		InfluenceMapTexture.GetComponent<RawImage> ().texture = iG.InfluenceMapTexture;
+		StartCoroutine("FirstUpdate");
 
 	}
 
 	void Update(){
+	}
+
+	public void ActualizeInfluenceMap(){
+		for (int i = 0; i < OriginatorObject.Count; i++) {
+			iG.RegisterOriginator (OriginatorObject [i].GetComponent<Influencer> ().originator);
+
+		}
 		iG.UpdateMap ();
 		iG.InfluenceMapTexture.Apply ();
 		InfluenceMapTexture.GetComponent<RawImage> ().texture = iG.InfluenceMapTexture;
 	}
 
-	public void ActualizeInfluenceMap(){
-		
+	public void AddInfluencePoint(GameObject obj){
+		if (!OriginatorObject.Contains (obj)) {
+			OriginatorObject.Add (obj);
+
+			ActualizeInfluenceMap ();
+		}
 	}
 
-	public void AddInfluencePoint(){
-		
+	public void RemoveInfluencePoint(GameObject obj){
+		if (OriginatorObject.Contains (obj)) {
+			OriginatorObject.Remove (obj);
+
+			ActualizeInfluenceMap ();
+		}
+	}
+
+	IEnumerator FirstUpdate(){
+		yield return new WaitForSeconds(1);
+		ActualizeInfluenceMap();
 	}
 }

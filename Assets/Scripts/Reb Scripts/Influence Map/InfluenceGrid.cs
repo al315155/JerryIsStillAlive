@@ -81,7 +81,7 @@ namespace AssemblyCSharp
 			for (int i = 0; i < m_OriginatorList.Count; i++) {
 
 
-				Collider[] influencePositions = Physics.OverlapSphere (m_OriginatorList [i].worldPosition, m_OriginatorList [i].influenceRange, InfluenceMask);
+				Collider[] influencePositions = Physics.OverlapSphere (m_OriginatorList[i].worldPosition, m_OriginatorList [i].influenceRange, InfluenceMask);
 
 				// para que coga solo suelo (sus colliders)
 				Collider[] nuevo;
@@ -91,7 +91,9 @@ namespace AssemblyCSharp
 						cont++;
 					}
 				}
+
 				nuevo = new Collider[influencePositions.Length - cont];
+
 				cont = 0;
 				for (int r = 0; r < influencePositions.Length; r++) {
 					if (influencePositions [r].tag == "Suelo"){
@@ -100,6 +102,7 @@ namespace AssemblyCSharp
 					}
 				}
 				influencePositions = nuevo;
+
 
 
 				for (int j = 0; j < influencePositions.Length; j++) {
@@ -112,11 +115,14 @@ namespace AssemblyCSharp
 								].HasInfluenceOfType (m_OriginatorList [i].type)) 
 					{
 
+						Vector2 originatorPosition = new Vector2 (m_OriginatorList [i].worldPosition.x, m_OriginatorList [i].worldPosition.z);
+						Vector2 influecePosition = new Vector2 (influencePositions [j].transform.position.x, influencePositions [j].transform.position.z);
+
 							map.map [influencePositions [j].GetComponentInParent<InfluencePosition> ().Hexes [0], 
 								influencePositions [j].GetComponentInParent<InfluencePosition> ().Hexes [1]]
 								.influences.Add (
 								new KeyValuePair<int, float> (m_OriginatorList [i].type, 
-									((1 / (Vector3.Distance (m_OriginatorList [i].worldPosition, influencePositions [j].transform.position)))) / m_OriginatorList [i].influenceRange));
+									((1 / (Vector3.Distance (originatorPosition, influecePosition)))) / m_OriginatorList [i].influenceRange));
 
 					} else {
 						KeyValuePair<int, float> iPos = map.map [influencePositions [j].GetComponentInParent<InfluencePosition> ().Hexes [0],
@@ -124,13 +130,14 @@ namespace AssemblyCSharp
 					
 						if (iPos.Value != -1) {
 
-
+							Vector2 originatorPosition = new Vector2 (m_OriginatorList [i].worldPosition.x, m_OriginatorList [i].worldPosition.z);
+							Vector2 influecePosition = new Vector2 (influencePositions [j].transform.position.x, influencePositions [j].transform.position.z);
 
 								map.map [influencePositions [j].GetComponentInParent<InfluencePosition> ().Hexes [0], 
 									influencePositions [j].GetComponentInParent<InfluencePosition> ().Hexes [1]].influences [iPos.Key] = 
 									
 									new KeyValuePair<int, float> (m_OriginatorList [i].type, iPos.Value +
-								((1 / (Vector3.Distance (m_OriginatorList [i].worldPosition, influencePositions [j].transform.position))) / m_OriginatorList [i].influenceRange));
+									((1 / (Vector3.Distance (originatorPosition, influecePosition))) / m_OriginatorList [i].influenceRange));
 
 						}
 					}
@@ -167,12 +174,12 @@ namespace AssemblyCSharp
 
 
 
-					if ((float)newColor.r < (float)newColor.b) {
+					if ((float)newColor.r < (float)newColor.b && (float)newColor.r != 0f) {
 
 							newColor.r = (byte)0f;
-						
 
-					} else if ((float)newColor.r > (float)newColor.b){
+
+					} else if ((float)newColor.r > (float)newColor.b && (float)newColor.b != 0f){
 						newColor.b = (byte)0f;
 
 					}

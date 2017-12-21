@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class Unidad : MonoBehaviour
 {
+	public InfluenceMap iM;
+
 	public SelectionManager selectionManager;
 
 	public TypeOfUnit unitType;
@@ -28,7 +30,10 @@ public class Unidad : MonoBehaviour
 
 	Pathfinding pathfinding;
 
-
+	[Tooltip("Coste de oxigeno para generar")]
+	public int costeOxigeno;
+	[Tooltip("Coste de enzimas para generar")]
+	public int costeEnzimas;
 
 	void Awake(){
 		selectionManager = GameObject.Find ("Selection Manager").GetComponent<SelectionManager> ();
@@ -37,16 +42,15 @@ public class Unidad : MonoBehaviour
 
 	void Start ()
 	{
-		if (unitType.Equals (TypeOfUnit.WalkableUnit)) {
-			GameObject model = transform.GetChild (0).gameObject;
-			for (int i = 0; i < model.transform.childCount; i++) {
-				model.transform.GetChild (i).GetComponent<Renderer> ().material = this.Material;
-			}
-		}
+//		if (unitType.Equals (TypeOfUnit.WalkableUnit)) {
+//			GameObject model = transform.GetChild (0).gameObject;
+//			for (int i = 0; i < model.transform.childCount; i++) {
+//				model.transform.GetChild (i).GetComponent<Renderer> ().material = this.Material;
+//			}
+//		}
 
 		life = lifeSpawn;
 		finished = false;
-
 	}
 
 	void Update(){
@@ -54,7 +58,6 @@ public class Unidad : MonoBehaviour
         {
             Destroy(mySelf);
         }
-
 	}
 
 	public bool Finished {
@@ -98,18 +101,14 @@ public class Unidad : MonoBehaviour
         {
             if ((unit.pathfinding.tileX == this.pathfinding.tileX - 1 && unit.pathfinding.tileY == this.pathfinding.tileY)||(unit.pathfinding.tileX == this.pathfinding.tileX-1 && unit.pathfinding.tileY == this.pathfinding.tileY+1)||(unit.pathfinding.tileX == this.pathfinding.tileX  && unit.pathfinding.tileY == this.pathfinding.tileY + 1)||(unit.pathfinding.tileX == this.pathfinding.tileX - 1 && unit.pathfinding.tileY == this.pathfinding.tileY - 1)||(unit.pathfinding.tileX == this.pathfinding.tileX  && unit.pathfinding.tileY == this.pathfinding.tileY - 1)||(unit.pathfinding.tileX == this.pathfinding.tileX +1 && unit.pathfinding.tileY == this.pathfinding.tileY ))
             {
-                Debug.Log("vida antes: " + unit.life);
                 unit.life -= this.damage;
-                Debug.Log("vida después: " + unit.life);
             }
         }
         else
         {
             if((unit.pathfinding.tileX == this.pathfinding.tileX - 1 && unit.pathfinding.tileY == this.pathfinding.tileY)||(unit.pathfinding.tileX == this.pathfinding.tileX  && unit.pathfinding.tileY == this.pathfinding.tileY+1)||(unit.pathfinding.tileX == this.pathfinding.tileX  && unit.pathfinding.tileY == this.pathfinding.tileY-1)||(unit.pathfinding.tileX == this.pathfinding.tileX + 1 && unit.pathfinding.tileY == this.pathfinding.tileY+1)||(unit.pathfinding.tileX == this.pathfinding.tileX +1 && unit.pathfinding.tileY == this.pathfinding.tileY-1)||(unit.pathfinding.tileX == this.pathfinding.tileX + 1 && unit.pathfinding.tileY == this.pathfinding.tileY))
             {
-                Debug.Log("vida antes: " + unit.life);
                 unit.life -= this.damage;
-                Debug.Log("vida después: " + unit.life);
             }
         }
      }
@@ -121,15 +120,12 @@ public class Unidad : MonoBehaviour
 		pathfinding.NextTurn ();
 	}
 
-	public void DoWork(GameObject building, Transform parent, Player currentPlayer){
-        GameObject newObject = Instantiate(building, parent);
-        newObject.transform.parent = parent;
-        if(newObject.GetComponent<Cuartel>()) newObject.GetComponent<Cuartel>().owner = currentPlayer;
-        // TODO else torre
-        //float margin = newObject.GetComponent<Renderer>().bounds.size.y / 2;
-        //Transform unitTransform = newObject.transform;
-        //unitTransform.position = new Vector3(unitTransform.position.x, unitTransform.position.y + margin + 1, unitTransform.position.z);
-    }
+//	public void DoWork(GameObject building, Transform parent, Player currentPlayer){
+//       
+//        //float margin = newObject.GetComponent<Renderer>().bounds.size.y / 2;
+//        //Transform unitTransform = newObject.transform;
+//        //unitTransform.position = new Vector3(unitTransform.position.x, unitTransform.position.y + margin + 1, unitTransform.position.z);
+//    }
 
     public void DoWork(ResourceType _type)
     {
@@ -143,7 +139,36 @@ public class Unidad : MonoBehaviour
                 break;
         }
     }
-  
+//
+//	public void Build(Unit building, Transform parent, Player currentPlayer){
+//		GameObject newObject = Instantiate(building, parent);
+//		newObject.transform.parent = parent;
+////		if(newObject.GetComponent<Cuartel>()) newObject.GetComponent<Cuartel>().owner = currentPlayer;
+////		if (building.GetComponent<Unidad> ().UnitType.Equals (TypeOfUnit.Turret)) {
+////			
+////		}
+//		building.GetComponent<Unidad>().Owner = currentPlayer;
+//	}
+
+	public void BuildUnit(GameObject newUnit, Hex placement){
+		// newUnit es un prefab. Hex es donde se ha clickado.
+		if( Owner.oxygen >= costeOxigeno && Owner.enzymes >= costeEnzimas)
+		{
+			GameObject newObject = Instantiate(newUnit/*, parent*/);
+			Unidad unit = newObject.GetComponent<Unidad>();
+
+			newObject.transform.position = placement.transform.position;
+			newObject.SetActive (true);
+			newObject.GetComponent<Unidad> ().pathfinding.tileX = placement.tileX;
+			newObject.GetComponent<Unidad> ().pathfinding.tileY = placement.tileY;
+
+			newObject.transform.SetParent (placement.transform);
+			unit.Owner = this.Owner;
+
+			Owner.Buy (unit);
+			iM.AddInfluencePoint (newObject);
+		}
+	}
 }
 
 public enum TypeOfUnit
@@ -151,7 +176,8 @@ public enum TypeOfUnit
 	WalkableUnit,
 	Building,
     Turret,
-    Barracks
+    Barracks,
+	Nexus
 }
 
 public enum TypeOfAction{
@@ -162,11 +188,11 @@ public enum TypeOfAction{
 	None
 }
 
-public enum TypeOfBuilding
-{
-    Tower,
-    Barracks
-}
+//public enum TypeOfBuilding
+//{
+//    Tower,
+//    Barracks
+//}
 
 
 	

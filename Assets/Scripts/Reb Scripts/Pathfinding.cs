@@ -6,7 +6,7 @@ public class Pathfinding : MonoBehaviour
 {
 	public int tileX, tileY;
 	public AdaptedMap map;
-	int moveSpeed = 8;
+	int moveSpeed = 2;
 	float remainingMovement = 2;
 	public List<Node> currentPath = null;
 

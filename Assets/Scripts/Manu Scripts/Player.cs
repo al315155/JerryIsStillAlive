@@ -67,4 +67,15 @@ public class Player : MonoBehaviour {
 		unitLabel.text = "Units " + Squad.Count;
 		resourcesLabel.text = "Oxygen " + oxygen + "\t\t Enzymes " + enzymes;
 	}
+
+	public void Buy(Unidad unit){
+		Debug.Log ("llego");
+		Debug.Log (unit.costeOxigeno);
+		oxygen -= unit.costeOxigeno;
+		enzymes -= unit.costeEnzimas;
+
+		ActualizeLabels ();
+	}
+
+
 }
