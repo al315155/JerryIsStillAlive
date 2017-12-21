@@ -1,8 +1,14 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using System.Collections.Generic;
+using System;
 
 public class SelectionManager : MonoBehaviour {
+
+	public Player player;
+	public Player cpu;
+
 
 	public GameObject UnitCanvas;
 	public GameObject currentSelected;
@@ -68,13 +74,12 @@ public class SelectionManager : MonoBehaviour {
     public void setCurrentUnit(GameObject unit)
     {
         this.currentUnit = unit;
-        
-        this.currentUnit.GetComponent<Pathfinding>().tileX = map.GetComponent<AdaptedMap>().map[currentSelected.GetComponent<Pathfinding>().tileX, currentSelected.GetComponent<Pathfinding>().tileY].tileX + 2;
-        this.currentUnit.GetComponent<Pathfinding>().tileY = map.GetComponent<AdaptedMap>().map[currentSelected.GetComponent<Pathfinding>().tileX, currentSelected.GetComponent<Pathfinding>().tileY].tileY;
-        Instantiate(currentUnit);
-        currentSelected.GetComponent<Unidad>().Finished = true;
-        UnitCanvas.SetActive(false);
-        currentSelected = null;
+//        this.currentUnit.GetComponent<Pathfinding>().tileX = map.GetComponent<AdaptedMap>().map[currentSelected.GetComponent<Pathfinding>().tileX, currentSelected.GetComponent<Pathfinding>().tileY].tileX + 2;
+//        this.currentUnit.GetComponent<Pathfinding>().tileY = map.GetComponent<AdaptedMap>().map[currentSelected.GetComponent<Pathfinding>().tileX, currentSelected.GetComponent<Pathfinding>().tileY].tileY;
+//        Instantiate(currentUnit);
+//        currentSelected.GetComponent<Unidad>().Finished = true;
+//        UnitCanvas.SetActive(false);
+//        currentSelected = null;
         
     }
 
@@ -158,7 +163,6 @@ public class SelectionManager : MonoBehaviour {
 			//las unidades son edificios obreros soldados
 			if (objective.tag.Equals ("Unit")) {
 				currentSelected = objective;
-				Debug.Log ("toco");
 				//si no habia nada seleccionado el Canvas se encuentra desactivado
 				//por lo que se activa y se actualiza el panel para la unidad actual
 				UnitCanvas.SetActive (true);
@@ -214,7 +218,6 @@ public class SelectionManager : MonoBehaviour {
 
 				//Si la unidad anteriormente seleccionada es obrera o soldado
 				if (unitActor.UnitType.Equals (TypeOfUnit.WalkableUnit)) {
-					Debug.Log ("soy walkable");
 
 					if (objective.tag.Equals ("Suelo")) {
 						Debug.Log (currentAction);
@@ -228,6 +231,50 @@ public class SelectionManager : MonoBehaviour {
 							break;
 
 						case TypeOfAction.WorkOn:
+							if ((objective.transform.parent.Find ("oxigeno") != null || objective.transform.parent.Find ("campoencimas") != null)) {
+								List<Hex> totalHexes = objective.GetComponentInParent<Hex> ().neighbors;
+								List<Hex> freeHexes = new List<Hex> ();
+
+								bool occupied;
+								for (int i = 0; i < totalHexes.Count; i++) {
+									occupied = false;
+									for (int j = 0; j < player.Squad.Count; j++) {
+										if (totalHexes [i].tileX == player.Squad [i].GetComponent<Pathfinding> ().tileX &&
+										    totalHexes [i].tileY == player.Squad [i].GetComponent<Pathfinding> ().tileY) {
+											occupied = true;
+											break;
+										}
+									}
+									if (!occupied) {
+										freeHexes.Add (totalHexes [i]);
+									}
+								}
+
+								totalHexes = freeHexes;
+								freeHexes = new List<Hex> ();
+
+								for (int i = 0; i < totalHexes.Count; i++) {
+									occupied = false;
+									for (int j = 0; j < cpu.Squad.Count; j++) {
+										if (totalHexes [i].tileX == cpu.Squad [i].GetComponent<Pathfinding> ().tileX &&
+										    totalHexes [i].tileY == cpu.Squad [i].GetComponent<Pathfinding> ().tileY) {
+											occupied = true;
+											break;
+										}
+									}
+									if (!occupied) {
+										freeHexes.Add (totalHexes [i]);
+									}
+								}
+
+								if (freeHexes.Count > 0) {
+									unitActor.DoWork (objective.transform.parent.GetComponentInChildren<Resource> (), freeHexes [UnityEngine.Random.Range (0, freeHexes.Count - 1)]);
+
+								}
+
+								currentSelected = null;
+								UnitCanvas.SetActive (false);
+							}
 							//unitActor.DoWork (currentBuilding, objective.transform.parent.transform, GameManager.Instance.ActivePlayer);
 							break;
 
@@ -235,8 +282,6 @@ public class SelectionManager : MonoBehaviour {
 							break;
 
 						case TypeOfAction.Build:
-							Debug.Log (currentBuilding);
-							Debug.Log (objective);
 							unitActor.BuildUnit (currentBuilding, objective.GetComponentInParent<Hex> ());
 							currentSelected = null;
 							UnitCanvas.SetActive (false);
@@ -249,27 +294,40 @@ public class SelectionManager : MonoBehaviour {
 							break;
 
 						}
+						currentAction = TypeOfAction.None;
 					}
-                    else if (objective.tag.Equals("Recursos")) {
-                        if (currentAction.Equals(TypeOfAction.WorkOn)) {
-                            unitActor.DoWork(currentResource);
-                            unitActor.Finished = true;
-
-                        } else {
-                            currentSelected = null;
-                            UnitCanvas.SetActive(false);
-                        }
-                    }
+//                    else if (objective.tag.Equals("Recursos")) {
+//                        if (currentAction.Equals(TypeOfAction.WorkOn)) {
+////                            unitActor.DoWork(currentResource);
+////                            unitActor.Finished = true;
+//
+//                        } else {
+////                            currentSelected = null;
+////                            UnitCanvas.SetActive(false);
+//                        }
+//                    }
+				}
 
 					//tanto como si acierta en la ejecución de la acción, como si selecciona algo
 					//que no se empareja con su acción, eliminamos la acción actual
-					currentAction = TypeOfAction.None;
-				} 
-//                else if (unitActor.UnitType.Equals(TypeOfUnit.Barracks))
-//                {
-//                    Debug.Log("Voy a Construir xdxd");
-//                    //unitActor.DoWork(currentUnit, objective.transform.parent.transform, GameManager.Instance.ActivePlayer);
-//                }
+				
+				else if (unitActor.UnitType.Equals (TypeOfUnit.Nexus) && objective.tag.Equals("Suelo")) {
+					if (currentAction.Equals (TypeOfAction.Build)) {
+						Debug.Log (objective);
+						unitActor.BuildUnit (Worker, objective.GetComponentInParent<Hex> ());
+					}
+					currentSelected = null;
+					UnitCanvas.SetActive (false);
+					unitActor.Finished = true;
+				} else if (unitActor.UnitType.Equals (TypeOfUnit.Barracks) && objective.tag.Equals("Suelo")) {
+					if (currentAction.Equals (TypeOfAction.Build)) {
+						unitActor.BuildUnit (Soldier, objective.GetComponentInParent<Hex> ());
+					}
+					currentSelected = null;
+					UnitCanvas.SetActive (false);
+					unitActor.Finished = true;
+				}
+
 				else {
 					//si es edificio, quitamos la selección
 					currentSelected = null;
