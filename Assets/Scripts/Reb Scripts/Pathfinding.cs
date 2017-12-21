@@ -62,12 +62,12 @@ public class Pathfinding : MonoBehaviour
 		if (currentPath.Count == 1)
 		{
 			currentPath = null;
-			Debug.Log ("findepath");
 		}
 	}
 
 	public void NextTurn()
 	{
+		
 		while (currentPath != null && remainingMovement > 0)
 		{
 			AdvancePathing();
