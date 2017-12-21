@@ -35,35 +35,7 @@ public class InfluenceMap : MonoBehaviour {
 		iG.UpdateMap ();
 
 
-//		for (int i = 0; i < map.map.GetLength (0); i++) {
-//			for (int j = 0; j < map.map.GetLength (1); j++) {
-//
-//				Debug.Log (map.map [i, j].worldObject);
-//				map.map[i,j].worldObject.GetComponent<Renderer>().sharedMaterial.color = map.map[i,j].myColor;
-//
-//			}
-//		}
-//
-//		for (int i = 0; i < map.map.GetLength (0); i++) {
-//			for (int j = 0; j < map.map.GetLength (1); j++) {
-//				map.map [i, j].myColor.a = 255;
-//				iG.InfluenceMapTexture.SetPixel (i, j, map.map [i, j].myColor);
-//
-//				map.map[i,j].worldObject.GetComponent<Renderer>().sharedMaterial.color = map.map[i,j].myColor;
-//
-//			}
-//		}
-//
 		iG.InfluenceMapTexture.Apply ();
-	//	for (int i = 0; i < map.map.GetLength (0); i++) {
-		//	for (int j = 0; j < map.map.GetLength (1); j++) {
-			//	map.map[i,j].worldObject.GetComponent<Renderer> ().enabled = true;
-
-//				map.map[i,j].worldObject.GetComponent<Renderer>().sharedMaterial.color = map.map[i,j].myColor;
-
-			//}
-	//	}
-//
 
 		InfluenceMapTexture.GetComponent<RawImage> ().texture = iG.InfluenceMapTexture;
 
@@ -73,5 +45,13 @@ public class InfluenceMap : MonoBehaviour {
 		iG.UpdateMap ();
 		iG.InfluenceMapTexture.Apply ();
 		InfluenceMapTexture.GetComponent<RawImage> ().texture = iG.InfluenceMapTexture;
+	}
+
+	public void ActualizeInfluenceMap(){
+		
+	}
+
+	public void AddInfluencePoint(){
+		
 	}
 }
