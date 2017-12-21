@@ -68,8 +68,10 @@ public class Pathfinding : MonoBehaviour
 
 	public void NextTurn()
 	{
+		
 		while (currentPath != null && remainingMovement > 0)
 		{
+			Debug.Log ("Mal parido");
 			AdvancePathing();
 		}
 

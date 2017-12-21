@@ -14,8 +14,14 @@ public class GoToResources : Action
         Debug.Log("Estoy dentro");
         unit = controller.player.GetComponent<Unidad>();
         unit.pathfinding.SetSelected(controller.player);
-        controller.map.GeneratePathTo(unit.mapa.transform.GetChild(6).gameObject.GetComponent<Hex>().tileX, unit.mapa.transform.GetChild(6).gameObject.GetComponent<Hex>().tileY);
-        unit.pathfinding.NextTurn();
+        
+		controller.map.GeneratePathTo(unit.mapa.transform.GetChild(300).gameObject.GetComponent<Hex>().tileX, unit.mapa.transform.GetChild(6).gameObject.GetComponent<Hex>().tileY);
+		if (unit.pathfinding.currentPath == null) {
+			
+			unit.pathfinding.NextTurn ();
+		}
+
+
     }
 }
 
