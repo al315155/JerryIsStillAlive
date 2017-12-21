@@ -11,9 +11,7 @@ public class Resource : MonoBehaviour {
 	public int tileX, tileY;
 	public AdaptedMap map;
 
-	bool extracting = false;
 
-	int extractors = 0;
 
 //    public Resource(ResourceType _resourceType, int _quantity = 0)
 //    {
@@ -22,29 +20,17 @@ public class Resource : MonoBehaviour {
 //    }
 
 	void Update(){
-		if (extracting) {
-			quantity -= 2 * extractors;
 
-			if (quantity < 0) {
-				Destroy (this.gameObject);
+//
+	}
 
-			}
+	public void Extract(int value){
+		quantity -= value;
+		if (quantity < 0) {
+			Destroy (gameObject);
 		}
 	}
-//
-	void Start(){
-		quantity = 5000;
-	}
 
-	public void StartExtracting(){
-		extracting = true;
-		extractors++;
-	}
-
-	public void StopExtracting(){
-		extracting = false;
-		extractors--;
-	}
 }
 
 public enum ResourceType

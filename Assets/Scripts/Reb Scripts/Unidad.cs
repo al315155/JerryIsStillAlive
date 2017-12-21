@@ -16,6 +16,8 @@ public class Unidad : MonoBehaviour
 
 
 	public Resource resource;
+	public float resourceTimer;
+	public float resourceCount;
 
 	public bool finished;
 
@@ -38,8 +40,8 @@ public class Unidad : MonoBehaviour
 	[Tooltip("Coste de enzimas para generar")]
 	public int costeEnzimas;
 
-	bool extractingOxygen;
-	bool extractingEnzymes;
+
+	bool extract;
 
 	void Awake(){
 		selectionManager = GameObject.Find ("Selection Manager").GetComponent<SelectionManager> ();
@@ -48,8 +50,10 @@ public class Unidad : MonoBehaviour
 
 	void Start ()
 	{
-		extractingOxygen = false;
-		extractingEnzymes = false;
+//		extractingOxygen = false;
+//		extractingEnzymes = false;
+
+		resourceTimer = 5f;
 
 		life = lifeSpawn;
 		finished = false;
@@ -62,19 +66,13 @@ public class Unidad : MonoBehaviour
         }
 
 		if (resource != null) {
-			if (extractingOxygen) {
-				Owner.AddResources (ResourceType.oxygen, 1);
-				Owner.ActualizeLabels ();
-			}
+			resourceCount += Time.deltaTime;
 
-			if (extractingEnzymes) {
-				Owner.AddResources (ResourceType.enzyme, 1);
-				Owner.ActualizeLabels ();
+			if (resourceCount > resourceTimer) {
+				resource.Extract (5);
+				Owner.AddResources (resource.resourceType, 5);
+				resourceCount = 0f;
 			}
-			
-		} else {
-			extractingOxygen = false;
-			extractingEnzymes = false;
 		}
 
 	}
@@ -117,9 +115,8 @@ public class Unidad : MonoBehaviour
 	//Walkable Functions!
 	public void DoAttack(Unidad unit){
 
-		if (extractingOxygen || extractingEnzymes) {
-			extractingEnzymes = false;
-			extractingOxygen = false;
+		if (resource != null) {
+			resource = null;
 		}
 
         if (this.pathfinding.tileY % 2 == 0)
@@ -140,10 +137,8 @@ public class Unidad : MonoBehaviour
 
 	public void DoMove(GameObject hitObject){
 
-
-		if (extractingOxygen || extractingEnzymes) {
-			extractingEnzymes = false;
-			extractingOxygen = false;
+		if (resource != null) {			
+			resource = null;
 		}
 
 		pathfinding.currentPath = null;
@@ -162,21 +157,14 @@ public class Unidad : MonoBehaviour
 	public void DoWork(Resource resource, Hex placement)
     {
 
-
-		if (extractingOxygen || extractingEnzymes) {
-			extractingEnzymes = false;
-			extractingOxygen = false;
+		if (this.resource != null) {
+			this.resource = null;
 		}
 
 
 		transform.position = placement.worldPosition;
-		resource.StartExtracting ();
-		if (resource.resourceType.Equals (ResourceType.oxygen)) {
-			extractingOxygen = true;
-		} else {
-			extractingEnzymes = true;
-		}
 		this.resource = resource;
+		extract = true;
 //        switch (_type)
 //        {
 //            case ResourceType.enzyme:
@@ -200,10 +188,8 @@ public class Unidad : MonoBehaviour
 
 	public void BuildUnit(GameObject newUnit, Hex placement){
 
-
-		if (extractingOxygen || extractingEnzymes) {
-			extractingEnzymes = false;
-			extractingOxygen = false;
+		if (resource != null) {
+			resource = null;
 		}
 
 

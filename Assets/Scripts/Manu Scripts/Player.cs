@@ -44,6 +44,7 @@ public class Player : MonoBehaviour {
                 oxygen+= i;
                 break;
         }
+		ActualizeLabels ();
     }
 
 	public void ResetUnits(){
@@ -69,8 +70,6 @@ public class Player : MonoBehaviour {
 	}
 
 	public void Buy(Unidad unit){
-		Debug.Log ("llego");
-		Debug.Log (unit.costeOxigeno);
 		oxygen -= unit.costeOxigeno;
 		enzymes -= unit.costeEnzimas;
 
