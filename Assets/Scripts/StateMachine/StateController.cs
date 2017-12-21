@@ -6,9 +6,13 @@ using UnityEngine.AI;
 public class StateController : MonoBehaviour {
 
 	
+	public Player human;
+	public Player cpu;
 
 	public State currentState;
 	public State remainState;
+
+	public Resources resources;
 	
     public string currentStateName;
 
