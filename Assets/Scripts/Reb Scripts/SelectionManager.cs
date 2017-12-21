@@ -17,6 +17,7 @@ public class SelectionManager : MonoBehaviour {
     public GameObject Worker;
     public GameObject currentUnit;
 
+
     public TypeOfAction CurrentAction{
 		get{ return currentAction; }
 		set{ currentAction = value; }
@@ -30,6 +31,7 @@ public class SelectionManager : MonoBehaviour {
 	void Start () {
 		UnitCanvas.SetActive (false);
 	}
+
 
 
 	public GameObject map;
@@ -59,12 +61,13 @@ public class SelectionManager : MonoBehaviour {
     public void setCurrentBuilding(GameObject building)
     {
         this.currentBuilding = building;
+		Debug.Log (currentBuilding);
+
     }
 
     public void setCurrentUnit(GameObject unit)
     {
         this.currentUnit = unit;
-        
         
         this.currentUnit.GetComponent<Pathfinding>().tileX = map.GetComponent<AdaptedMap>().map[currentSelected.GetComponent<Pathfinding>().tileX, currentSelected.GetComponent<Pathfinding>().tileY].tileX + 2;
         this.currentUnit.GetComponent<Pathfinding>().tileY = map.GetComponent<AdaptedMap>().map[currentSelected.GetComponent<Pathfinding>().tileX, currentSelected.GetComponent<Pathfinding>().tileY].tileY;
@@ -114,7 +117,7 @@ public class SelectionManager : MonoBehaviour {
             UnitCanvas.transform.GetChild(5).gameObject.SetActive(false);
 
         }
-        else if (unit.Panel.name.Equals("nexus Panel"))
+        else if (unit.Panel.name.Equals("Nexus Panel"))
         {
             UnitCanvas.transform.GetChild(0).gameObject.SetActive(false);
             UnitCanvas.transform.GetChild(1).gameObject.SetActive(false);
@@ -127,13 +130,13 @@ public class SelectionManager : MonoBehaviour {
             UnitCanvas.transform.GetChild(0).gameObject.SetActive(false);
             UnitCanvas.transform.GetChild(1).gameObject.SetActive(false);
             UnitCanvas.transform.GetChild(2).gameObject.SetActive(false);
-            UnitCanvas.transform.GetChild(3).gameObject.SetActive(false);
-
+            UnitCanvas.transform.GetChild(4).gameObject.SetActive(false);
+			UnitCanvas.transform.GetChild(5).gameObject.SetActive(false);
         }
 	}
 
 	private void ActualizePanel(Unidad unit){
-		
+		Debug.Log ("actualizo panel");
 		SwitchPanel (unit);
 
 		if (unit.UnitType.Equals (TypeOfUnit.WalkableUnit) || unit.UnitType.Equals(TypeOfUnit.Turret)) {			
@@ -155,7 +158,7 @@ public class SelectionManager : MonoBehaviour {
 			//las unidades son edificios obreros soldados
 			if (objective.tag.Equals ("Unit")) {
 				currentSelected = objective;
-
+				Debug.Log ("toco");
 				//si no habia nada seleccionado el Canvas se encuentra desactivado
 				//por lo que se activa y se actualiza el panel para la unidad actual
 				UnitCanvas.SetActive (true);
@@ -211,36 +214,42 @@ public class SelectionManager : MonoBehaviour {
 
 				//Si la unidad anteriormente seleccionada es obrera o soldado
 				if (unitActor.UnitType.Equals (TypeOfUnit.WalkableUnit)) {
+					Debug.Log ("soy walkable");
 
-                    if (objective.tag.Equals("Suelo")) {
+					if (objective.tag.Equals ("Suelo")) {
+						Debug.Log (currentAction);
 
-                        switch (currentAction)
-                        {
-                            case TypeOfAction.Move:
-                                unitActor.DoMove(objective);
-                                currentSelected = null;
-                                UnitCanvas.SetActive(false);
-                                unitActor.Finished = true;
-                                break;
+						switch (currentAction) {
+						case TypeOfAction.Move:
+							unitActor.DoMove (objective);
+							currentSelected = null;
+							UnitCanvas.SetActive (false);
+							unitActor.Finished = true;
+							break;
 
-                            case TypeOfAction.WorkOn:
-                                unitActor.DoWork(currentBuilding, objective.transform.parent.transform, GameManager.Instance.ActivePlayer);
-                                break;
+						case TypeOfAction.WorkOn:
+							//unitActor.DoWork (currentBuilding, objective.transform.parent.transform, GameManager.Instance.ActivePlayer);
+							break;
 
-                            case TypeOfAction.Attack:
-                                break;
+						case TypeOfAction.Attack:
+							break;
 
-                            case TypeOfAction.Build:
-                                unitActor.DoWork(currentUnit, objective.transform.parent.transform, GameManager.Instance.ActivePlayer);
-                                break;
+						case TypeOfAction.Build:
+							Debug.Log (currentBuilding);
+							Debug.Log (objective);
+							unitActor.BuildUnit (currentBuilding, objective.GetComponentInParent<Hex> ());
+							currentSelected = null;
+							UnitCanvas.SetActive (false);
+							unitActor.Finished = true;
+							break;
 
-                            default:
-                                currentSelected = null;
-                                UnitCanvas.SetActive(false);
-                                break;
+						default:
+							currentSelected = null;
+							UnitCanvas.SetActive (false);
+							break;
 
-                        }
-                    }
+						}
+					}
                     else if (objective.tag.Equals("Recursos")) {
                         if (currentAction.Equals(TypeOfAction.WorkOn)) {
                             unitActor.DoWork(currentResource);
@@ -256,11 +265,11 @@ public class SelectionManager : MonoBehaviour {
 					//que no se empareja con su acción, eliminamos la acción actual
 					currentAction = TypeOfAction.None;
 				} 
-                else if (unitActor.UnitType.Equals(TypeOfUnit.Barracks))
-                {
-                    Debug.Log("Voy a Construir xdxd");
-                    unitActor.DoWork(currentUnit, objective.transform.parent.transform, GameManager.Instance.ActivePlayer);
-                }
+//                else if (unitActor.UnitType.Equals(TypeOfUnit.Barracks))
+//                {
+//                    Debug.Log("Voy a Construir xdxd");
+//                    //unitActor.DoWork(currentUnit, objective.transform.parent.transform, GameManager.Instance.ActivePlayer);
+//                }
 				else {
 					//si es edificio, quitamos la selección
 					currentSelected = null;
@@ -290,6 +299,7 @@ public class SelectionManager : MonoBehaviour {
     {
         Debug.Log("Construiiiiir!!");
         currentAction = TypeOfAction.Build;
+
     }
 
 

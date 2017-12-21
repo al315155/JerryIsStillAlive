@@ -53,6 +53,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4080054412911744}
+  - component: {fileID: 114753674752001962}
+  - component: {fileID: 114648710272944774}
   m_Layer: 0
   m_Name: torre 1
   m_TagString: Untagged
@@ -183,3 +185,43 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1167215175009264}
   m_Mesh: {fileID: 4300000, guid: b5473a94a74531c47b16d46ef83180eb, type: 3}
+--- !u!114 &114648710272944774
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1987062993607190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 751131a593935c546a262b962b7e8b5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileX: 0
+  tileY: 0
+  map: {fileID: 0}
+--- !u!114 &114753674752001962
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1987062993607190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2893556ad12279441b8568b5df08a35a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  iM: {fileID: 0}
+  selectionManager: {fileID: 0}
+  unitType: 2
+  panel: {fileID: 0}
+  mySelf: {fileID: 0}
+  Owner: {fileID: 0}
+  finished: 0
+  icon: {fileID: 0}
+  kingdom: 
+  lifeSpawn: 100
+  Material: {fileID: 0}
+  range: 3
+  damage: 1
+  costeOxigeno: 10
+  costeEnzimas: 10
