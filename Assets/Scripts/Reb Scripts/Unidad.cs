@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,7 +25,10 @@ public class Unidad : MonoBehaviour
     [Header("UI")]
 	//mientras el proyecto no esté ordenado
 	public Sprite icon;
-	public string kingdom;
+
+
+
+    public string kingdom;
 	public float lifeSpawn;
 	public float life;
 
@@ -112,8 +116,16 @@ public class Unidad : MonoBehaviour
 		set{ lifeSpawn = value; }
 	}
 
-	//Walkable Functions!
-	public void DoAttack(Unidad unit){
+    public void DoDefaultMovement()
+    {
+        Hex parentHex = this.gameObject.transform.parent.GetComponent<Hex>();
+        Hex target = AdaptedMap.Instance.map[parentHex.tileX - 1, parentHex.tileY - 1];
+        DoMove(target.gameObject);
+
+    }
+
+    //Walkable Functions!
+    public void DoAttack(Unidad unit){
 
 		if (resource != null) {
 			resource = null;
@@ -151,9 +163,10 @@ public class Unidad : MonoBehaviour
 		}
 
 		pathfinding.currentPath = null;
-		pathfinding.SetSelected (gameObject);
+        pathfinding.SetSelected (gameObject);
 		pathfinding.TileAction (hitObject);
 		pathfinding.NextTurn ();
+
 	}
 
 //	public void DoWork(GameObject building, Transform parent, Player currentPlayer){
@@ -195,7 +208,7 @@ public class Unidad : MonoBehaviour
 //		building.GetComponent<Unidad>().Owner = currentPlayer;
 //	}
 
-	public void BuildUnit(GameObject newUnit, Hex placement){
+	public Unidad BuildUnit(GameObject newUnit, Hex placement){
 
 		if (resource != null) {
 			resource = null;
@@ -226,7 +239,9 @@ public class Unidad : MonoBehaviour
             Debug.Log("¡Me he alistado!");    
 
 			Owner.Buy (unit);
+            return unit;
 		}
+        return null;
 	}
 }
 

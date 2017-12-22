@@ -109,13 +109,15 @@ GameObject:
   - component: {fileID: 65251088466345758}
   - component: {fileID: 114726996942921424}
   - component: {fileID: 114191310890037882}
+  - component: {fileID: 114602134249591538}
+  - component: {fileID: 114545047303831346}
   m_Layer: 0
   m_Name: Worker
   m_TagString: Unit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1548817810083722
 GameObject:
   m_ObjectHideFlags: 1
@@ -279,8 +281,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1461393686821662}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.71, y: 0.5, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_Children:
   - {fileID: 4399143050987904}
@@ -756,9 +758,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 751131a593935c546a262b962b7e8b5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileX: 1
-  tileY: 0
+  tileX: 2
+  tileY: 2
   map: {fileID: 0}
+--- !u!114 &114545047303831346
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1461393686821662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 352faa90f161a534289941d555e78dcd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentState: 0
+--- !u!114 &114602134249591538
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1461393686821662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c5ba870499bce347a3dc019c21cd19b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  originator:
+    worldPosition: {x: 0, y: 0, z: 0}
+    influence: 0
+    influenceRange: 0
+    type: 0
+    color:
+      serializedVersion: 2
+      rgba: 0
 --- !u!114 &114726996942921424
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -770,18 +803,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2893556ad12279441b8568b5df08a35a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  iM: {fileID: 0}
   selectionManager: {fileID: 0}
   unitType: 0
   panel: {fileID: 0}
   mySelf: {fileID: 0}
   Owner: {fileID: 0}
+  resource: {fileID: 0}
+  resourceTimer: 0
+  resourceCount: 0
   finished: 0
   icon: {fileID: 21300000, guid: 93da87a76e87f5b469989193a3769482, type: 3}
   kingdom: Jerusalem
   lifeSpawn: 150
+  life: 0
   Material: {fileID: 2100000, guid: dcc527340790b5946a033b32d0fc1165, type: 2}
   range: 0
   damage: 0
+  costeOxigeno: 10
+  costeEnzimas: 50
 --- !u!136 &136602407761833132
 CapsuleCollider:
   m_ObjectHideFlags: 1

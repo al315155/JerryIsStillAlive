@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class AdaptedMap : MonoBehaviour
 {
+    public static AdaptedMap Instance;
+
 	public GameObject selectedUnit;
 	public TileType[] tileTypes;
 	public Node[,] graph;
@@ -19,7 +21,10 @@ public class AdaptedMap : MonoBehaviour
 	float zOffset = 1.51f;
 
 	void Awake(){
-
+        if(Instance == null)
+        {
+            Instance = this;
+        }
     }
 
 

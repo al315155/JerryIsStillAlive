@@ -6,7 +6,7 @@ using System;
 
 public class SelectionManager : MonoBehaviour
 {
-
+    public static SelectionManager Instance;
     public Player player;
     public Player cpu;
 
@@ -33,6 +33,10 @@ public class SelectionManager : MonoBehaviour
     [Tooltip("Velocidad de proyectil")]
 	public float projectileSpeed;
 
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     public TypeOfAction CurrentAction
     {
@@ -60,7 +64,7 @@ public class SelectionManager : MonoBehaviour
     }
 
     public GameObject map;
-    Hex[,] mapaHex;
+    public Hex[,] mapaHex;
     public Color colorAtaque;
 
     void Update()
@@ -303,6 +307,7 @@ public class SelectionManager : MonoBehaviour
                                     currentSelected = null;
                                     UnitCanvas.SetActive(false);
                                     unitActor.Finished = true;
+                                    GameManager.Instance.CheckPlayerTurn();
                                 }
                                 break;
 
@@ -402,7 +407,10 @@ public class SelectionManager : MonoBehaviour
                     if (currentAction.Equals(TypeOfAction.Build))
                     {
                         Debug.Log(objective);
-                        unitActor.BuildUnit(Worker, objective.GetComponentInParent<Hex>());
+                        Debug.Log("¡Voy a construir!");
+                        Unidad u = unitActor.BuildUnit(Worker, objective.GetComponentInParent<Hex>());
+                        if (u != null) unitActor.Owner.Pueblo.Add(u);
+                        u.finished = true;
                     }
                     currentSelected = null;
                     UnitCanvas.SetActive(false);
@@ -413,9 +421,15 @@ public class SelectionManager : MonoBehaviour
                 {
                     if (currentAction.Equals(TypeOfAction.Build))
                     {
-                        unitActor.BuildUnit(Soldier, objective.GetComponentInParent<Hex>());
+                        Unidad u = unitActor.BuildUnit(Soldier, objective.GetComponentInParent<Hex>());
+                        if (u != null)
+                        {
+                            unitActor.Owner.Ejercito.Add(u);
+                        }
+                        u.finished = true;
                     }
                     currentSelected = null;
+                    
                     UnitCanvas.SetActive(false);
                     unitActor.Finished = true;
                     GameManager.Instance.CheckPlayerTurn();

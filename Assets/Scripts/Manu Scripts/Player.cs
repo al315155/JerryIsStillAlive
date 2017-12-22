@@ -15,6 +15,9 @@ public class Player : MonoBehaviour
     public Text resourcesLabel;
 
     public List<Unidad> Squad = new List<Unidad>();
+    public List<Unidad> Ejercito = new List<Unidad>();
+    public List<Unidad> Pueblo = new List<Unidad>();
+    public List<Unidad> Ciudad = new List<Unidad>();
 
     private void Start()
     {
@@ -22,7 +25,7 @@ public class Player : MonoBehaviour
         oxygen = 500;
         enzymes = 500;
 
-        ActualizeLabels();
+        if(unitLabel) ActualizeLabels();
     }
 
     public void EnlistUnit(Unidad u)
@@ -46,7 +49,7 @@ public class Player : MonoBehaviour
                 oxygen += i;
                 break;
         }
-        ActualizeLabels();
+        if (unitLabel) ActualizeLabels();
     }
 
     public void ResetUnits()
@@ -65,11 +68,10 @@ public class Player : MonoBehaviour
             Debug.Log(u.Finished);
             if (!u.finished)
             {
-                isMyTurn = false;
+                Debug.Log("¡Aún no he acabado!");
                 return false;
             }
         }
-
         return true;
     }
 
@@ -84,7 +86,7 @@ public class Player : MonoBehaviour
         oxygen -= unit.costeOxigeno;
         enzymes -= unit.costeEnzimas;
 
-        ActualizeLabels();
+        if (unitLabel) ActualizeLabels();
     }
 
 

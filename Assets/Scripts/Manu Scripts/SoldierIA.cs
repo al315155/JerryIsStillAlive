@@ -10,15 +10,17 @@ public class SoldierIA : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        unit = this.gameObject.GetComponent<Unidad>();
         currentState = UnitState.DEFAULT;
     }
 
     // Update is called once per frame
-    void Update()
+    public void Act()
     {
         switch (currentState)
         {
             case UnitState.DEFAULT:
+                unit.DoDefaultMovement();
                 break;
             case UnitState.DEFENSIVA:
                 break;
