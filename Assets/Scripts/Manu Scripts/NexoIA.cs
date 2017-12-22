@@ -18,6 +18,7 @@ public class NexoIA : MonoBehaviour {
         Unidad u = unit.BuildUnit(SelectionManager.Instance.Worker, placement);
         unit.finished = true;
         GameManager.Instance.CPU.Pueblo.Add(u);
+        u.finished = true;
         GameManager.Instance.CheckPlayerTurn();
     }
 }

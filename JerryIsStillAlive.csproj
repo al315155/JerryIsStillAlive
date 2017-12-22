@@ -241,6 +241,7 @@
     <Compile Include="Assets\Scripts\Manu Scripts\CPUIA.cs" />
     <Compile Include="Assets\Scripts\Manu Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\Manu Scripts\hexType.cs" />
+    <Compile Include="Assets\Scripts\Manu Scripts\Menu.cs" />
     <Compile Include="Assets\Scripts\Manu Scripts\NexoIA.cs" />
     <Compile Include="Assets\Scripts\Manu Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\Manu Scripts\Resource.cs" />

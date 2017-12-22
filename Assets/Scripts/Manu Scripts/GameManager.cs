@@ -57,7 +57,7 @@ public class GameManager : MonoBehaviour {
 
     private void ExecuteCPUIA()
     {
-        CPU.Ciudad[0].GetComponent<NexoIA>().Act();
+
         if (CPU.Ejercito.Count > 0)
         {
             foreach (Unidad soldado in CPU.Ejercito)
@@ -74,10 +74,12 @@ public class GameManager : MonoBehaviour {
             //}
             foreach (Unidad ciudadano in CPU.Pueblo)
             {
+                Debug.Log("Voy a mover a mi queco.");
                 if(!ciudadano.finished) ciudadano.GetComponent<WorkerIA>().Act();
             }
         }
 
+        CPU.Ciudad[0].GetComponent<NexoIA>().Act();
 
         //foreach(Unidad edificio in CPU.Ciudad){
         //}

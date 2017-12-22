@@ -120,7 +120,9 @@ public class Unidad : MonoBehaviour
     {
         Hex parentHex = this.gameObject.transform.parent.GetComponent<Hex>();
         Hex target = AdaptedMap.Instance.map[parentHex.tileX - 1, parentHex.tileY - 1];
+        this.transform.SetParent(target.gameObject.transform);
         DoMove(target.gameObject);
+        this.finished = true;
 
     }
 

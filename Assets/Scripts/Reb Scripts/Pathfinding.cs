@@ -84,7 +84,14 @@ public class Pathfinding : MonoBehaviour
 			int y = hitObject.GetComponentInParent<Hex>().tileY;
 
 			map.GeneratePathTo(x, y);
-		}
+        }
+        else
+        {
+            int x = hitObject.GetComponentInParent<Hex>().tileX;
+            int y = hitObject.GetComponentInParent<Hex>().tileY;
+
+            map.GeneratePathTo(x, y);
+        }
 	}
 
 	public void SetSelected(GameObject obj){
