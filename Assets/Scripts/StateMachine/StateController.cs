@@ -23,13 +23,12 @@ public class StateController : MonoBehaviour {
 	
 	public Hex destination;
 
-	public float resourceTimer = 2f;
+	public float resourceTimer = 5f;
 	public float time;
    
    
     public GameObject player;
     //public float acceleration_speed;
- 
 
 	//[HideInInspector] public NavMeshAgent navMeshAgent;
 	[HideInInspector] public int nextWayPoint;
@@ -56,6 +55,8 @@ public class StateController : MonoBehaviour {
 
 	void Update()
 	{
+		time += Time.deltaTime;
+
 		
         //TODO: Cambiar esto con listeners para que sea más eficiente.
         //if (isPlayerOnSight || isPlayerHeard) navMeshAgent.speed = acceleration_speed;

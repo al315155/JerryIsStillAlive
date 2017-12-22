@@ -73,3 +73,4 @@ C:\Users\Rebeca\Documents\GitHub\JerryIsStillAlive\Temp\bin\Debug\UnityEngine.Ho
 C:\Users\Rebeca\Documents\GitHub\JerryIsStillAlive\Temp\bin\Debug\UnityEngine.SpatialTracking.xml
 C:\Users\Rebeca\Documents\GitHub\JerryIsStillAlive\obj\Debug\Assembly-CSharp.dll
 C:\Users\Rebeca\Documents\GitHub\JerryIsStillAlive\obj\Debug\Assembly-CSharp.pdb
+C:\Users\Rebeca\Documents\GitHub\JerryIsStillAlive\obj\Debug\Assembly-CSharp.csprojResolveAssemblyReference.cache
