@@ -289,10 +289,11 @@ public class SelectionManager : MonoBehaviour {
 							break;
 
 						case TypeOfAction.Build:
-							unitActor.BuildUnit (currentBuilding, objective.GetComponentInParent<Hex> (), unitActor.Owner.Ciudad);
+							Unidad u = unitActor.BuildUnit (currentBuilding, objective.GetComponentInParent<Hex> (), unitActor.Owner.Ciudad);
 							currentSelected = null;
 							UnitCanvas.SetActive (false);
 							unitActor.Finished = true;
+                            u.Finished = true;
                             GameManager.Instance.CheckPlayerTurn();
 							break;
 
