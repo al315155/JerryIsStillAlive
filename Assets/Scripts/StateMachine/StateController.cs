@@ -44,9 +44,6 @@ public class StateController : MonoBehaviour {
 
 		
 		Debug.Log ("HOLA JODER");
-
-
-
 		/*navMeshAgent = GetComponent<NavMeshAgent> ();
 		navMeshAgent.enabled = true;
         acceleration_speed = navMeshAgent.speed * 2f;
@@ -61,7 +58,6 @@ public class StateController : MonoBehaviour {
         //TODO: Cambiar esto con listeners para que sea más eficiente.
         //if (isPlayerOnSight || isPlayerHeard) navMeshAgent.speed = acceleration_speed;
         //else navMeshAgent.speed = basic_speed;
-        Debug.Log("Udapte");
 
 		currentState.UpdateState (this);
 	}

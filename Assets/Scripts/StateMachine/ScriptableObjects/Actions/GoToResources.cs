@@ -25,16 +25,27 @@ public class GoToResources : Action
 		bool occupied;
 		for (int i = 0; i < totalHexes.Count; i++) {
 			occupied = false;
-			for (int j = 0; j < controller.human.Squad.Count; j++) {
-				if (totalHexes [i].tileX == controller.human.Squad [i].GetComponent<Pathfinding> ().tileX &&
-					totalHexes [i].tileY == controller.human.Squad [i].GetComponent<Pathfinding> ().tileY) {
-					occupied = true;
-					break;
-				}
-			}
-			if (!occupied) {
-				freeHexes.Add (totalHexes [i]);
-			}
+            if (i < controller.human.Squad.Count)
+            {
+                for (int j = 0; j < controller.human.Squad.Count; j++)
+                {
+                    if (totalHexes[i].tileX == controller.human.Squad[i].GetComponent<Pathfinding>().tileX &&
+                        totalHexes[i].tileY == controller.human.Squad[i].GetComponent<Pathfinding>().tileY)
+                    {
+                        occupied = true;
+                        break;
+                    }
+                }
+
+                if (!occupied)
+                {
+                    freeHexes.Add(totalHexes[i]);
+                }
+            }
+            else
+            {
+                break;
+            }
 		}
 
 		totalHexes = freeHexes;
@@ -42,16 +53,26 @@ public class GoToResources : Action
 
 		for (int i = 0; i < totalHexes.Count; i++) {
 			occupied = false;
-			for (int j = 0; j < controller.cpu.Squad.Count; j++) {
-				if (totalHexes [i].tileX == controller.cpu.Squad [i].GetComponent<Pathfinding> ().tileX &&
-					totalHexes [i].tileY == controller.cpu.Squad [i].GetComponent<Pathfinding> ().tileY) {
-					occupied = true;
-					break;
-				}
-			}
-			if (!occupied) {
-				freeHexes.Add (totalHexes [i]);
-			}
+            if (i < controller.cpu.Squad.Count)
+            {
+                for (int j = 0; j < controller.cpu.Squad.Count; j++)
+                {
+                    if (totalHexes[i].tileX == controller.cpu.Squad[i].GetComponent<Pathfinding>().tileX &&
+                        totalHexes[i].tileY == controller.cpu.Squad[i].GetComponent<Pathfinding>().tileY)
+                    {
+                        occupied = true;
+                        break;
+                    }
+                }
+                if (!occupied)
+                {
+                    freeHexes.Add(totalHexes[i]);
+                }
+            }
+            else
+            {
+                break;
+            }
 		}
 
 		if (freeHexes.Count > 0) {

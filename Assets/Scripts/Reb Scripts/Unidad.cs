@@ -148,13 +148,6 @@ public class Unidad : MonoBehaviour
 		pathfinding.NextTurn ();
 	}
 
-//	public void DoWork(GameObject building, Transform parent, Player currentPlayer){
-//       
-//        //float margin = newObject.GetComponent<Renderer>().bounds.size.y / 2;
-//        //Transform unitTransform = newObject.transform;
-//        //unitTransform.position = new Vector3(unitTransform.position.x, unitTransform.position.y + margin + 1, unitTransform.position.z);
-//    }
-
 	public void DoWork(Resource resource, Hex placement)
     {
 
@@ -187,7 +180,7 @@ public class Unidad : MonoBehaviour
 //		building.GetComponent<Unidad>().Owner = currentPlayer;
 //	}
 
-	public void BuildUnit(GameObject newUnit, Hex placement){
+	public Unidad BuildUnit(GameObject newUnit, Hex placement, List<Unidad> ListToAdd){
 
 		if (resource != null) {
 			resource = null;
@@ -213,9 +206,13 @@ public class Unidad : MonoBehaviour
 			}
 
 			unit.Owner = this.Owner;
+            //unit.Owner.Squad.Add(unit);
+            ListToAdd.Add(unit);
 
 			Owner.Buy (unit);
+            return unit;
 		}
+        return null;
 	}
 }
 

@@ -14,6 +14,9 @@ public class Player : MonoBehaviour {
 	public Text resourcesLabel;
 
     public List<Unidad> Squad = new List<Unidad>();
+    public List<Unidad> Pueblo = new List<Unidad>();
+    public List<Unidad> Ejercito = new List<Unidad>();
+    public List<Unidad> Ciudad = new List<Unidad>();
 
     private void Start()
     {
@@ -21,7 +24,7 @@ public class Player : MonoBehaviour {
         oxygen = 500;
         enzymes = 500;
 
-		ActualizeLabels ();
+        if (unitLabel) ActualizeLabels();
     }
 
     public void EnlistUnit(Unidad u)
@@ -44,22 +47,31 @@ public class Player : MonoBehaviour {
                 oxygen+= i;
                 break;
         }
-		ActualizeLabels ();
+		if(unitLabel) ActualizeLabels ();
     }
 
 	public void ResetUnits(){
 		foreach (Unidad u in Squad) {
 			u.finished = false;
 		}
-	}
+        foreach(Unidad u in Ciudad) {
+            u.finished = false;
+        }
+    }
 
 	public bool isEndOfTurn(){
 		foreach (Unidad u in Squad) {
 			if (!u.finished) {
-				isMyTurn = false;
 				return false;
 			}
 		}
+        foreach (Unidad c in Ciudad)
+        {
+            if (!c.finished)
+            {
+                return false;
+            }
+        }
 
 		return true;
 	}
@@ -73,7 +85,7 @@ public class Player : MonoBehaviour {
 		oxygen -= unit.costeOxigeno;
 		enzymes -= unit.costeEnzimas;
 
-		ActualizeLabels ();
+        if (unitLabel) ActualizeLabels();
 	}
 
 

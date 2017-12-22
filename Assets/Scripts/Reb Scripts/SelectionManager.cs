@@ -9,6 +9,7 @@ public class SelectionManager : MonoBehaviour {
 	public Player player;
 	public Player cpu;
 
+    public static SelectionManager Instance; 
 
 	public GameObject UnitCanvas;
 	public GameObject currentSelected;
@@ -38,9 +39,14 @@ public class SelectionManager : MonoBehaviour {
 		UnitCanvas.SetActive (false);
 	}
 
+    private void Awake()
+    {
+        Instance = this;
+    }
 
 
-	public GameObject map;
+
+    public GameObject map;
 
 	void Update () {
 
@@ -228,6 +234,7 @@ public class SelectionManager : MonoBehaviour {
 							currentSelected = null;
 							UnitCanvas.SetActive (false);
 							unitActor.Finished = true;
+                            GameManager.Instance.CheckPlayerTurn();
 							break;
 
 						case TypeOfAction.WorkOn:
@@ -282,10 +289,11 @@ public class SelectionManager : MonoBehaviour {
 							break;
 
 						case TypeOfAction.Build:
-							unitActor.BuildUnit (currentBuilding, objective.GetComponentInParent<Hex> ());
+							unitActor.BuildUnit (currentBuilding, objective.GetComponentInParent<Hex> (), unitActor.Owner.Ciudad);
 							currentSelected = null;
 							UnitCanvas.SetActive (false);
 							unitActor.Finished = true;
+                            GameManager.Instance.CheckPlayerTurn();
 							break;
 
 						default:
@@ -314,15 +322,17 @@ public class SelectionManager : MonoBehaviour {
 				else if (unitActor.UnitType.Equals (TypeOfUnit.Nexus) && objective.tag.Equals("Suelo")) {
 					if (currentAction.Equals (TypeOfAction.Build)) {
 						Debug.Log (objective);
-						unitActor.BuildUnit (Worker, objective.GetComponentInParent<Hex> ());
+						Unidad u = unitActor.BuildUnit (Worker, objective.GetComponentInParent<Hex> (), unitActor.Owner.Pueblo);
+                        unitActor.Owner.Squad.Add(u);
 					}
 					currentSelected = null;
 					UnitCanvas.SetActive (false);
 					unitActor.Finished = true;
 				} else if (unitActor.UnitType.Equals (TypeOfUnit.Barracks) && objective.tag.Equals("Suelo")) {
 					if (currentAction.Equals (TypeOfAction.Build)) {
-						unitActor.BuildUnit (Soldier, objective.GetComponentInParent<Hex> ());
-					}
+						Unidad u = unitActor.BuildUnit (Soldier, objective.GetComponentInParent<Hex> (), unitActor.Owner.Ejercito);
+                        unitActor.Owner.Squad.Add(u);
+                    }
 					currentSelected = null;
 					UnitCanvas.SetActive (false);
 					unitActor.Finished = true;
@@ -342,6 +352,12 @@ public class SelectionManager : MonoBehaviour {
 	{
 		currentAction = TypeOfAction.Move;
 	}
+
+    public void PassMyTurn()
+    {
+        currentSelected.GetComponent<Unidad>().finished = true;
+        GameManager.Instance.CheckPlayerTurn();
+    }
 
 	public void WorkOn ()
 	{

@@ -14,6 +14,9 @@ public class Recolect : Action {
 				controller.myResource.Extract (5);
 				controller.GetComponent<Unidad> ().Owner.AddResources (controller.myResource.resourceType, 5);
 				controller.time = 0f;
+                controller.GetComponent<Unidad>().finished = true;
+                Debug.Log("UFFF Ya me estoy tocando los huevos.");
+                GameManager.Instance.CheckPlayerTurn();
 			}
 		}
 	}

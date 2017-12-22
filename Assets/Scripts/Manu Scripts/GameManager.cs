@@ -14,6 +14,10 @@ public class GameManager : MonoBehaviour {
 
 	public GameObject TurnCanvas;
 	private Text PlayerText;
+    public GameObject Camera;
+
+    public GameObject nexoJugador;
+    public GameObject nexoCPU;
 
 
     private void Awake()
@@ -31,19 +35,35 @@ public class GameManager : MonoBehaviour {
     void Start () {
 		ActivePlayer = Jugador;
 		ActivePlayer.isMyTurn = true;
-		//PlayerText = TurnCanvas.transform.GetChild (1).GetComponent<Text> ();
-		//ShowCanvas ();
+		PlayerText = TurnCanvas.transform.GetChild (1).GetComponent<Text> ();
+		ShowCanvas ();
+        ChangeCameraPositionToNexus(nexoJugador);
+    }
+
+    public void ChangeCameraPositionToNexus(GameObject nexo)
+    {
+        Camera.transform.position = new Vector3(nexo.transform.position.x, Camera.transform.position.y, nexo.transform.position.z);
     }
 
 	public void ChangeTurn(){
 		if (ActivePlayer.Equals (Jugador)) {
 			ActivePlayer = CPU;
 			CPU.ResetUnits ();
-		} else {
+            ShowCanvas();
+            ChangeCameraPositionToNexus(nexoCPU);
+            ExecuteCPUIA();
+        } else {
 			ActivePlayer = Jugador;
 			Jugador.ResetUnits ();
-		}
+            ShowCanvas();
+            ChangeCameraPositionToNexus(nexoJugador);
+        }
 	}
+
+    public void ExecuteCPUIA()
+    {
+        CPU.Ciudad[0].GetComponent<NexoIA>().Act();
+    }
 
 	public void CheckPlayerTurn(){
 		if (ActivePlayer.isEndOfTurn ())
