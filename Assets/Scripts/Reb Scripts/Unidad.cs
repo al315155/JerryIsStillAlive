@@ -119,9 +119,13 @@ public class Unidad : MonoBehaviour
     public void DoDefaultMovement()
     {
         Hex parentHex = this.gameObject.transform.parent.GetComponent<Hex>();
+        Debug.Log("Estoy en la posicion: " + pathfinding.map.TileCoordToWorldCoord(parentHex.tileX, parentHex.tileY));
         Hex target = AdaptedMap.Instance.map[parentHex.tileX - 1, parentHex.tileY - 1];
+        Debug.Log("Me tengo que mover a la posición: " + target.x + ", " + 0.5f + ", " + target.y);
+        //DoMove(target.gameObject);
+        Vector3 nextPosition = new Vector3(target.x, 0.5f, target.y);
+        this.gameObject.transform.position = nextPosition;
         this.transform.SetParent(target.gameObject.transform);
-        DoMove(target.gameObject);
         this.finished = true;
 
     }
